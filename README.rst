@@ -70,6 +70,7 @@ MannKendall
 -----------
 
 .. code-block:: python
+
     import matplotlib.pyplot as plt
     import pandas as pd
     from kendall_stats import MannKendall, example_data
@@ -109,6 +110,7 @@ MannKendall
     ax.set_title('Example Mann Kendall')
     plt.show()
 
+
 .. figure:: figures/example_mk.png
    :height: 300 px
    :align: center
@@ -118,7 +120,9 @@ SeasonalKendall
 ----------------
 SeasonalKendall is as per MannKendall, but with a seasonal component.
 
+
 .. code-block:: python
+
     import matplotlib.pyplot as plt
     import pandas as pd
     from kendall_stats import SeasonalKendall, example_data
@@ -155,6 +159,7 @@ MultiPartKendall
 -----------------
 
 .. code-block:: python
+
     from pathlib import Path
     import matplotlib.pyplot as plt
     import pandas as pd
@@ -226,6 +231,7 @@ MultiPartKendall
 
 
 .. code-block:: python
+
     # todo get best match
 
     # the user can get the data, and kendall stats for a specific breakpoint
@@ -245,6 +251,7 @@ MultiPartKendall
    :align: center
 
 .. code-block:: python
+
     # user can specify any number of parts to split data into
     x_para, y_para = example_data.make_multipart_parabolic_data(slope=example_data.multipart_parabolic_slopes[0],
                                                                 noise=example_data.multipart_parabolic_noises[2],
@@ -274,7 +281,9 @@ MultiPartKendall
 SeasonalMultiPartKendall
 -------------------------
 The SeasonalMultiPartKendall is as per the MultiPartKendall, but with a seasonal component.
+
 .. code-block:: python
+
     from pathlib import Path
     import matplotlib.pyplot as plt
     import pandas as pd
@@ -313,6 +322,7 @@ The SeasonalMultiPartKendall is as per the MultiPartKendall, but with a seasonal
    :align: center
 
 .. code-block:: python
+
     # user can specify any number of parts to split data into
     data = example_data.make_seasonal_multipart_parabolic(slope=example_data.multipart_parabolic_slopes[0],
                                                                 noise=example_data.multipart_parabolic_noises[2],
