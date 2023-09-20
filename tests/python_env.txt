@@ -1,0 +1,4 @@
+# test env creation
+conda create -c conda-forge --name kendall python=3.11 pandas>=2.0.3 numpy>=1.25.2 matplotlib>=3.7.2 scipy>=1.11.2 pytables>=3.8.0
+
+
