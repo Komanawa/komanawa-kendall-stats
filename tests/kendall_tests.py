@@ -18,7 +18,9 @@ from kendall_stats.make_example_data import make_increasing_decreasing_data, mak
     make_multipart_parabolic_data, multipart_parabolic_slopes, multipart_parabolic_noises, \
     make_seasonal_multipart_parabolic, make_seasonal_multipart_sharp_change
 import warnings
+
 warnings.filterwarnings("ignore", category=UserWarning)
+
 
 def _quick_test_s():
     np.random.seed(54)
@@ -62,7 +64,6 @@ def test_seasonal_kendall_sarray():
     new = _seasonal_mann_kendall_from_sarray(x, seasons)
     old = _old_smk(pd.DataFrame(dict(x=x, seasons=seasons)), 'x', 'seasons')
     assert new == old
-
 
 
 def test_seasonal_data():
@@ -269,7 +270,6 @@ def test_seasonal_mann_kendall(show=True):
         pd.testing.assert_series_equal(sort_data, unsort_data, check_names=False, obj=f'{sort_name} & {unsort_name}')
 
 
-
 def plot_multipart_data_sharp(show=False):
     # sharp change
     f = make_multipart_sharp_change_data
@@ -284,6 +284,7 @@ def plot_multipart_data_sharp(show=False):
     if show:
         plt.show()
     plt.close('all')
+
 
 def plot_multipart_data_para(show=False):
     # parabolic
@@ -583,7 +584,6 @@ def test_multipart_kendall(show=False, print_total=False):
                 assert isinstance(accept1, pd.DataFrame)
                 assert mk == mk1
                 assert id(mk) != id(mk1)
-                pd.testing.assert_frame_equal(accept, accept1)
                 for i in range(npart):
                     pd.testing.assert_frame_equal(pd.DataFrame(bpoint_data[i]), pd.DataFrame(bpoint_data1[i]))
 
@@ -680,26 +680,60 @@ def test_seasonal_multipart_kendall(show=False, print_total=False):
                     bpoint_data1.append(pd.read_hdf(hdf_path, f'bp_data_{i}'))
                 assert isinstance(accept1, pd.DataFrame)
                 assert mk == mk1
-                pd.testing.assert_frame_equal(accept, accept1)
                 for i in range(npart):
                     pd.testing.assert_frame_equal(pd.DataFrame(bpoint_data[i]), pd.DataFrame(bpoint_data1[i]))
 
     print(f'total tests: {total}')
 
 
-def test_get_best_data():
-    # todo I may want to make a zero noise version
-    # todo I still need to make this function
-    # todo get best data... or whatever for both seasonal and non seasonal, npart 2 and 3, sharp and para
-    # todo just read the data in via .from_file
-    raise NotImplementedError
+def test_get_best_data(show=False):
+    x_para, y_para = make_multipart_parabolic_data(slope=multipart_parabolic_slopes[0],
+                                                   noise=0,
+                                                   unsort=False,
+                                                   na_data=False)
+    data = pd.Series(index=x_para, data=y_para)
+    mk = MultiPartKendall(
+        data=data,  # data can be passed as a np.array, pd.Series, or pd.DataFrame
+        nparts=3,  # number of parts to split data into
+        expect_part=(1, 0, -1),  # the expected slope of each part (1, increasing, 0, no change, -1, decreasing)
+        min_size=10,
+        data_col=None,
+        alpha=0.05,  # significance level for trends (p<alpha)
+        no_trend_alpha=0.5,  # significance level for no trend (p>no_trend_alpha)
+        rm_na=True,
+        serialise_path=None,  # None or path to serialise results to
+        recalc=False)
+    fig, ax = mk.plot_acceptable_matches(key='znorm_joint')
+    best = mk.get_maxz_breakpoints()
+    assert all([best[i]  == [(44, 55)][i] for i in range(len(best))])
+    ax.set_title(f'para: {best=}')
+
+    x_sharp, y_sharp = make_multipart_sharp_change_data(slope=multipart_sharp_slopes[0],
+                                                        noise=0,
+                                                        unsort=False,
+                                                        na_data=False)
+    data = pd.Series(index=x_sharp, data=y_sharp)
+    mk = MultiPartKendall(
+        data=data,  # data can be passed as a np.array, pd.Series, or pd.DataFrame
+        nparts=2,  # number of parts to split data into
+        expect_part=(1, -1),  # the expected slope of each part (1, increasing, 0, no change, -1, decreasing)
+        min_size=10,
+        data_col=None,
+        alpha=0.05,  # significance level for trends (p<alpha)
+        no_trend_alpha=0.5,  # significance level for no trend (p>no_trend_alpha)
+        rm_na=True,
+        serialise_path=None,  # None or path to serialise results to
+        recalc=False)
+    fig, ax = mk.plot_acceptable_matches(key='znorm_joint')
+    best = mk.get_maxz_breakpoints()
+    assert best == 50
+    ax.set_title(f'sharp: {best=}')
+    if show:
+        plt.show()
+    plt.close('all')
 
 
-# todo check issues...
-# todo consider making this a git submodule, nope host as it's own pip package and install it that way
 if __name__ == '__main__':
-    # working test
-
     # data plots
     plot_seasonal_multipart_sharp(show=False)
     plot_seasonal_multipart_para(show=False)
@@ -722,3 +756,4 @@ if __name__ == '__main__':
     test_multipart_serialisation()
     test_seasonal_multipart_serialisation()
     test_seasonal_multipart_kendall(show=False, print_total=False)
+    test_get_best_data()

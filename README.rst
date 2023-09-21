@@ -232,7 +232,19 @@ MultiPartKendall
 
 .. code-block:: python
 
-    # todo get best match
+    # the user can get the best match(s)
+    # the best match is the maximum znorm_joint value where:
+    #   if expected trend == 1 or -1:
+    #     znorm = the min-max normalised z value for each part
+    #   else: (no trend expected)
+    #     znorm = 1 - the min-max normalised z value for each part
+    #   and
+    #     znorm_joint = the sum of the znorm values for each part
+    # when there are multiple matches with the same znorm_joint value both will be returned
+    # when there are no acceptable matches None will be returned
+    # or a ValueError will be raised if raise_on_none=True
+    best_points = mk.get_maxz_breakpoints()
+
 
     # the user can get the data, and kendall stats for a specific breakpoint
     data, kendall_stats = mk.get_data_from_breakpoints(breakpoints=50) # get the data split at point 50

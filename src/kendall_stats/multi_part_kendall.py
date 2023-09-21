@@ -161,6 +161,16 @@ class MultiPartKendall():
                              inplace=True)
             outdata = pd.merge(outdata, next_data, left_index=True, right_index=True)
 
+        for p in range(self.nparts):
+            temp = ((outdata[f'z_p{p}'].abs() - outdata[f'z_p{p}'].abs().min())
+                    /
+                    (outdata[f'z_p{p}'].abs().max() - outdata[f'z_p{p}'].abs().min()))
+            if self.expect_part[p] == 0:
+                outdata[f'znorm_p{p}'] = 1 - temp
+            else:
+                outdata[f'znorm_p{p}'] = temp
+
+        outdata['znorm_joint'] = outdata[[f'znorm_p{p}' for p in range(self.nparts)]].sum(axis=1)
         return deepcopy(outdata)
 
     def get_all_matches(self):
@@ -178,9 +188,16 @@ class MultiPartKendall():
 
     def get_maxz_breakpoints(self, raise_on_none=False):
         """
-        get the breakpoints for the maximum z value???
+        get the breakpoints for the maximum joint normalised (min-max for each part) z
+        the best match is the maximum znorm_joint value where:
+           *  if expected trend == 1 or -1:
+           *    znorm = the min-max normalised z value for each part
+           *  else: (no trend expected)
+           *    znorm = 1 - the min-max normalised z value for each part
+           *  and
+           *    znorm_joint = the sum of the znorm values for each part
         :param raise_on_none: bool, if True will raise an error if no acceptable matches, otherwise will return None
-        :return:
+        :return: array of breakpoint tuples
         """
         acceptable = self.get_acceptable_matches()
         if acceptable.empty:
@@ -188,7 +205,10 @@ class MultiPartKendall():
                 raise ValueError('no acceptable matches')
             else:
                 return None
-        raise NotImplementedError  # todo think about this
+
+        best = acceptable[acceptable['znorm_joint'] == acceptable['znorm_joint'].max()]
+
+        return best.index.values
 
     def get_data_from_breakpoints(self, breakpoints):
         """
@@ -233,16 +253,33 @@ class MultiPartKendall():
     def plot_acceptable_matches(self, key):
         """
         quickly plot the acceptable matches
-        :param key: key to plot (one of ['p', 'z', 's', 'var_s'])
+        :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint])
+                    or 'all' a figure for each value
+                    note joint stats only have 1 value
         :return:
         """
-        assert key in ['p', 'z', 's', 'var_s']
-        fig, ax = plt.subplots(figsize=(10, 8))
-        acceptable = self.get_acceptable_matches()
-        use_keys = [f'{key}_p{i}' for i in range(self.nparts)]
-        acceptable = acceptable[use_keys]
-        acceptable.plot(ax=ax, ls='none', marker='o')
-        return fig, ax
+        poss_keys = ['p', 'z', 's', 'var_s', 'znorm', 'znorm_joint']
+        assert key in poss_keys or key == 'all'
+        if key == 'all':
+            keys = poss_keys
+        else:
+            keys = np.atleast_1d(key)
+        figs, axs = [], []
+        for key in keys:
+            fig, ax = plt.subplots(figsize=(10, 8))
+            acceptable = self.get_acceptable_matches()
+            if 'joint' in key:
+                use_keys = [key]
+            else:
+                use_keys = [f'{key}_p{i}' for i in range(self.nparts)]
+            acceptable = acceptable[use_keys]
+            acceptable.plot(ax=ax, ls='none', marker='o')
+            figs.append(fig)
+            axs.append(ax)
+        if len(figs) == 1:
+            return fig, ax
+        else:
+            return figs, axs
 
     def plot_data_from_breakpoints(self, breakpoints, ax=None, txt_vloc=-0.05, add_labels=True):
         """

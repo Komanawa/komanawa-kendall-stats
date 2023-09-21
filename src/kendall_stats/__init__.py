@@ -5,3 +5,6 @@ on: 21/09/23
 from kendall_stats.multi_part_kendall import MultiPartKendall, SeasonalMultiPartKendall
 from kendall_stats.mann_kendall import MannKendall, SeasonalKendall
 import kendall_stats.make_example_data as example_data
+
+# todo test install
+# todo make version 1.0.0
