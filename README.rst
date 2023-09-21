@@ -151,7 +151,7 @@ SeasonalKendall is as per MannKendall, but with a seasonal component.
     ax.set_title('example seasonal kendall')
     plt.show()
 
-.. figure:: figures/example_mk.png
+.. figure:: figures/example_smk.png
    :height: 500 px
    :align: center
 
