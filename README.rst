@@ -23,7 +23,7 @@ The following command will install a virtual environment with all the dependenci
 
 .. code-block:: bash
 
-    conda create -c conda-forge --name kendall python=3.11 pandas=2.0.3 numpy=1.25.2 matplotlib=3.7.2 scipy=1.11.2 tables=3.8.0
+    conda create -c conda-forge --name kendall python=3.11 pandas=2.0.3 numpy=1.25.2 matplotlib=3.7.2 scipy=1.11.2 pytables=3.8.0
 
 Install
 ========
