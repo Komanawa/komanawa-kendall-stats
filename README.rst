@@ -30,7 +30,7 @@ Install
 
 we manage this package as a simple github package, but it can still be installed by pip:
 
-For the latest version use: # todo test
+For the latest version use:
 
 .. code-block:: bash
 
