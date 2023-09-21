@@ -30,20 +30,20 @@ Install
 
 we manage this package as a simple github package, but it can still be installed by pip:
 
-For the latest version use: # todo
+For the latest version use: # todo test
 
 .. code-block:: bash
 
-    pip install git+https://{access_token}@github.com/Komanawa-Solutions-Ltd/BGS_downloader.git
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git
 
 For a specific version use:
 
 .. code-block:: bash
 
-    pip install git+https://{access_token}@github.com/Komanawa-Solutions-Ltd/BGS_downloader.git@{version}
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git@{version}
 
     # example:
-    pip install git+https://{access_token}@github.com/Komanawa-Solutions-Ltd/BGS_downloader.git@v1.1.1
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git@v1.0.0
 
 Update
 =======
@@ -52,13 +52,13 @@ Update
 
 .. code-block:: bash
 
-    pip uninstall BGS_downloader
+    pip uninstall kendall_stats
 
 otherwise, use pip update option
 
 .. code-block:: bash
 
-    pip install git+https://{access_token}@github.com/Komanawa-Solutions-Ltd/BGS_downloader.git -U
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git -U
 
 
 Usage
@@ -112,7 +112,7 @@ MannKendall
 
 
 .. figure:: figures/example_mk.png
-   :height: 300 px
+   :height: 500 px
    :align: center
 
 
@@ -152,7 +152,7 @@ SeasonalKendall is as per MannKendall, but with a seasonal component.
     plt.show()
 
 .. figure:: figures/example_mk.png
-   :height: 300 px
+   :height: 500 px
    :align: center
 
 MultiPartKendall
@@ -225,7 +225,7 @@ MultiPartKendall
 
 
 .. figure:: figures/multi_mk_z.png
-   :height: 300 px
+   :height: 500 px
    :align: center
 
 
@@ -247,7 +247,7 @@ MultiPartKendall
     plt.show()
 
 .. figure:: figures/multi_mk_data.png
-   :height: 300 px
+   :height: 500 px
    :align: center
 
 .. code-block:: python
@@ -275,7 +275,7 @@ MultiPartKendall
     plt.show()
 
 .. figure:: figures/multi_mk_data2.png
-   :height: 300 px
+   :height: 500 px
    :align: center
 
 SeasonalMultiPartKendall
@@ -318,7 +318,7 @@ The SeasonalMultiPartKendall is as per the MultiPartKendall, but with a seasonal
     plt.show()
 
 .. figure:: figures/multi_smk_data.png
-   :height: 300 px
+   :height: 500 px
    :align: center
 
 .. code-block:: python
@@ -346,5 +346,5 @@ The SeasonalMultiPartKendall is as per the MultiPartKendall, but with a seasonal
     plt.show()
 
 .. figure:: figures/multi_smk_data2.png
-    :height: 300 px
+    :height: 500 px
     :align: center
