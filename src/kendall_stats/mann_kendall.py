@@ -487,7 +487,7 @@ class MannKendall(object):
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:
-            fig = ax.figure()
+            fig = ax.figure
 
         sslope, sintercept, lo_slope, up_slope = self.calc_senslope()
         # plot the senslope fit and intercept
@@ -580,7 +580,7 @@ class SeasonalKendall(object):
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:
-            fig = ax.figure()
+            fig = ax.figure
 
         sslope, sintercept, lo_slope, up_slope = self.calc_senslope()
         # plot the senslope fit and intercept
