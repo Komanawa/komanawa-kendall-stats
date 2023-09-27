@@ -532,6 +532,7 @@ class MultiPartKendall():
         to be updated for the seasonal kendall
         :return:
         """
+        temp_data = {}
         for sp in np.atleast_2d(self.all_start_points):
             start = 0
             for i in range(self.nparts):
@@ -539,9 +540,14 @@ class MultiPartKendall():
                     end = self.n
                 else:
                     end = sp[i]
-                data = (*sp,
-                        *_mann_kendall_from_sarray(self.x[start:end], alpha=self.alpha,
-                                                   sarray=self.s_array[start:end, start:end]))
+                temp_key = (start, end)
+                if temp_key in temp_data:
+                    datai = temp_data[temp_key]
+                else:
+                    datai = _mann_kendall_from_sarray(self.x[start:end], alpha=self.alpha,
+                                                       sarray=self.s_array[start:end, start:end])
+                    temp_data[temp_key] = datai
+                data = (*sp,*datai)
                 self.datasets[f'p{i}'].append(data)
                 start = end
         for part in range(self.nparts):
@@ -741,7 +747,7 @@ class SeasonalMultiPartKendall(MultiPartKendall):
         to be updated for the seasonal kendall
         :return:
         """
-
+        temp_data = {}
         for sp in self.all_start_points:
             start = 0
             for i in range(self.nparts):
@@ -749,11 +755,16 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                     end = self.n
                 else:
                     end = sp[i]
-                data = (*sp,
-                        *_seasonal_mann_kendall_from_sarray(self.x[start:end], alpha=self.alpha,
-                                                            season_data=self.season_data[start:end],
-                                                            sarray=self.s_array[start:end,
-                                                                   start:end]))  # and passing the s array
+                temp_key = (start, end)
+                if temp_key in temp_data:
+                    datai = temp_data[temp_key]
+                else:
+                    datai = _seasonal_mann_kendall_from_sarray(self.x[start:end], alpha=self.alpha,
+                                                                season_data=self.season_data[start:end],
+                                                                sarray=self.s_array[start:end,
+                                                                       start:end])  # and passing the s array
+                    temp_data[temp_key] = datai
+                data = (*sp, *datai)
                 self.datasets[f'p{i}'].append(data)
                 start = end
         for part in range(self.nparts):
