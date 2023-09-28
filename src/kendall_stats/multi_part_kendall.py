@@ -2,6 +2,7 @@
 created matt_dumont 
 on: 21/09/23
 """
+import traceback
 
 import numpy as np
 import pandas as pd
@@ -64,6 +65,7 @@ class MultiPartKendall():
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
         """
+        self.freq_limit = None
         self.trend_dict = {1: 'increasing', -1: 'decreasing', 0: 'no trend'}
 
         if not initalize:
@@ -125,9 +127,11 @@ class MultiPartKendall():
             try:
                 # check datasets
                 if datatype == 'DataFrame':
-                    pd.testing.assert_frame_equal(self.data, other.data, check_dtype=False, check_like=True)
+                    pd.testing.assert_frame_equal(self.data, other.data, check_dtype=False, check_like=True,
+                                                  )
                 elif datatype == 'Series':
-                    pd.testing.assert_series_equal(self.data, other.data, check_dtype=False, check_like=True)
+                    pd.testing.assert_series_equal(self.data, other.data, check_dtype=False, check_like=True,
+                                                   )
                 elif datatype == 'ndarray':
                     assert np.allclose(self.data, other.data)
                 else:
@@ -149,6 +153,73 @@ class MultiPartKendall():
         except AssertionError:
             out *= False
         return bool(out)
+
+    def print_mk_diffs(self, other):
+        """
+        convenience function to print the differences between two MultiPartKendall classes
+        :param other:
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            print('problem with class: not same class: got ', type(other))
+        if not self.data_col == other.data_col:
+            print(f'problem with data col {self.data_col=} {other.data_col=}')
+        if not self.rm_na == other.rm_na:
+            print(f'problem with rm_na {self.rm_na=} other: {other.rm_na=}')
+        if not self.season_col == other.season_col:
+            print(f'problem with season col {self.season_col=} {other.season_col=}')
+        if not self.nparts == other.nparts:
+            print(f'problem with nparts: {self.nparts=} {other.nparts=}')
+        if not self.min_size == other.min_size:
+            print(f'problem with min_size {self.min_size=} {other.min_size=}')
+        if not self.alpha == other.alpha:
+            print(f'problem with alpha {self.alpha=} {other.alpha=}')
+        if not self.no_trend_alpha == other.no_trend_alpha:
+            print(f'problem with no_trend_alpha {self.no_trend_alpha=} {other.no_trend_alpha=}')
+        if not all(np.atleast_1d(self.expect_part) == np.atleast_1d(other.expect_part)):
+            print(f'problem with expect_part {self.expect_part=} {other.expect_part=}')
+        datatype = type(self.data).__name__
+        datatype_other = type(other.data).__name__
+        if not datatype == datatype_other:
+            print(f'problem with datatype {datatype=} {datatype_other=}')
+
+        if datatype == datatype_other:
+            try:
+                # check datasets
+                if datatype == 'DataFrame':
+                    pd.testing.assert_frame_equal(self.data, other.data, check_dtype=False, check_like=True,
+                                                  )
+                elif datatype == 'Series':
+                    pd.testing.assert_series_equal(self.data, other.data, check_dtype=False, check_like=True,
+                                                   )
+                elif datatype == 'ndarray':
+                    assert np.allclose(self.data, other.data)
+                else:
+                    raise AssertionError(f'unknown datatype {datatype}')
+            except AssertionError:
+                print(f'problem with data')
+                print(traceback.format_exc())
+
+        if not np.allclose(self.x, other.x):
+            print(f'problem with x')
+        if not np.allclose(self.idx_values, other.idx_values):
+            print(f'problem with idx_values')
+        if not np.all(self.acceptable_matches.values == other.acceptable_matches.values):
+            print(f'problem with acceptable_matches')
+        if self.season_col is not None:
+            if not np.allclose(self.season_data, other.season_data):
+                print(f'problem with season_data')
+
+        if not np.allclose(self.s_array, other.s_array):
+            print('problem with s_array')
+        if not np.allclose(self.all_start_points, other.all_start_points):
+            print('problem with all_start_points')
+        try:
+            for part in range(self.nparts):
+                pd.testing.assert_frame_equal(self.datasets[f'p{part}'], other.datasets[f'p{part}'])
+        except AssertionError:
+            print(f'problem with datasets')
+            print(traceback.format_exc())
 
     def get_acceptable_matches(self):
         outdata = self.datasets['p0'].loc[self.acceptable_matches]
@@ -363,6 +434,10 @@ class MultiPartKendall():
         self.rm_na = bool(params['rm_na'])
         self.n = int(params['n'])
         self.expect_part = [int(params[f'expect_part{i}']) for i in range(self.nparts)]
+        if 'freq_limit' in params.index:
+            self.freq_limit = params['freq_limit']
+        else:
+            self.freq_limit = None
 
         params_str = pd.read_hdf(self.serialise_path, 'params_str')
         assert isinstance(params_str, pd.Series)
@@ -545,9 +620,9 @@ class MultiPartKendall():
                     datai = temp_data[temp_key]
                 else:
                     datai = _mann_kendall_from_sarray(self.x[start:end], alpha=self.alpha,
-                                                       sarray=self.s_array[start:end, start:end])
+                                                      sarray=self.s_array[start:end, start:end])
                     temp_data[temp_key] = datai
-                data = (*sp,*datai)
+                data = (*sp, *datai)
                 self.datasets[f'p{i}'].append(data)
                 start = end
         for part in range(self.nparts):
@@ -605,6 +680,8 @@ class MultiPartKendall():
             params['min_size'] = float(self.min_size)
             params['rm_na'] = float(self.rm_na)
             params['n'] = float(self.n)
+            if self.freq_limit is not None:
+                params['freq_limit'] = float(self.freq_limit)
             for i in range(self.nparts):
                 params[f'expect_part{i}'] = float(self.expect_part[i])
 
@@ -661,7 +738,7 @@ class SeasonalMultiPartKendall(MultiPartKendall):
     def __init__(self, data, data_col, season_col, nparts=2, expect_part=(1, -1), min_size=10,
                  alpha=0.05, no_trend_alpha=0.5,
                  rm_na=True,
-                 serialise_path=None, recalc=False, initalize=True):
+                 serialise_path=None, freq_limit=0.05, recalc=False, initalize=True):
         """
         multi part seasonal mann kendall test to indentify a change point(s) in a time series
         after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
@@ -681,6 +758,7 @@ class SeasonalMultiPartKendall(MultiPartKendall):
         :return:
         """
         self.trend_dict = {1: 'increasing', -1: 'decreasing', 0: 'no trend'}
+        self.freq_limit = freq_limit
 
         if not initalize:
             assert all([e is None for e in
@@ -760,9 +838,10 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                     datai = temp_data[temp_key]
                 else:
                     datai = _seasonal_mann_kendall_from_sarray(self.x[start:end], alpha=self.alpha,
-                                                                season_data=self.season_data[start:end],
-                                                                sarray=self.s_array[start:end,
-                                                                       start:end])  # and passing the s array
+                                                               season_data=self.season_data.values[start:end],
+                                                               sarray=self.s_array[start:end,
+                                                                      start:end],
+                                                               freq_limit=self.freq_limit)  # and passing the s array
                     temp_data[temp_key] = datai
                 data = (*sp, *datai)
                 self.datasets[f'p{i}'].append(data)
