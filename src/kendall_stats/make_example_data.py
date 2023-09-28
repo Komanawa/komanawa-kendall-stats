@@ -2,12 +2,13 @@
 created matt_dumont 
 on: 21/09/23
 """
-import  numpy as np
+import numpy as np
 import pandas as pd
 from copy import deepcopy
 
-def make_increasing_decreasing_data(slope=1, noise=1):
-    x = np.arange(100).astype(float)
+
+def make_increasing_decreasing_data(slope=1, noise=1, step=1):
+    x = np.arange(0, 100, step).astype(float)
     y = x * slope
     np.random.seed(68)
     noise = np.random.normal(0, noise, len(x))
@@ -15,11 +16,11 @@ def make_increasing_decreasing_data(slope=1, noise=1):
     return x, y
 
 
-def make_seasonal_data(slope, noise, unsort, na_data):
-    x, y = make_increasing_decreasing_data(slope=slope, noise=noise)
-    assert len(x) % 4 == 0
+def make_seasonal_data(slope, noise, unsort, na_data, step=1):
+    x, y = make_increasing_decreasing_data(slope=slope, noise=noise, step=step)
     # add/reduce data in each season (create bias + +- noise)
-    seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4, axis=0).flatten()
+    seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4+1, axis=0).flatten()
+    seasons = seasons[:len(x)]
     y[seasons == 1] += 0 * noise / 2
     y[seasons == 2] += 2 * noise / 2
     y[seasons == 3] += 0 * noise / 2
@@ -43,7 +44,7 @@ def make_seasonal_data(slope, noise, unsort, na_data):
     return test_dataframe
 
 
-def make_multipart_sharp_change_data(slope, noise, unsort, na_data):
+def make_multipart_sharp_change_data(slope, noise, unsort, na_data, step=1):
     """
     sharp v change positive slope is increasing and then decreasing, negative is opposite
     :param slope:
@@ -52,10 +53,11 @@ def make_multipart_sharp_change_data(slope, noise, unsort, na_data):
     :param na_data:
     :return:
     """
-    x = np.arange(100)
+    x = np.arange(0, 100, step).astype(float)
     y = np.zeros_like(x).astype(float)
-    y[:50] = x[:50] * slope + 100
-    y[50:] = (x[50:] - x[49].max()) * slope * -1 + y[49]
+    sp = len(x) // 2
+    y[:sp] = x[:sp] * slope + 100
+    y[sp:] = (x[sp:] - x[sp - 1].max()) * slope * -1 + y[sp - 1]
 
     np.random.seed(68)
     noise = np.random.normal(0, noise, len(x))
@@ -67,7 +69,7 @@ def make_multipart_sharp_change_data(slope, noise, unsort, na_data):
         y[na_idxs] = np.nan
 
     if unsort:
-        x_use = deepcopy(x)
+        x_use = np.arange(len(x))
         np.random.shuffle(x_use)
         y = y[x_use]
         x = x[x_use]
@@ -75,7 +77,7 @@ def make_multipart_sharp_change_data(slope, noise, unsort, na_data):
     return x, y
 
 
-def make_multipart_parabolic_data(slope, noise, unsort, na_data):
+def make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1):
     """
     note the slope is multiplied by -1 to retain the same standards make_sharp_change_data
     positive slope is increasing and then decreasing, negative is opposite
@@ -86,7 +88,7 @@ def make_multipart_parabolic_data(slope, noise, unsort, na_data):
     :return:
     """
 
-    x = np.arange(100)
+    x = np.arange(0, 100, step).astype(float)
     y = slope * -1 * (x - 49) ** 2 + 100.
 
     np.random.seed(68)
@@ -107,11 +109,11 @@ def make_multipart_parabolic_data(slope, noise, unsort, na_data):
     return x, y
 
 
-def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data):
-    x, y = make_multipart_parabolic_data(slope=slope, noise=noise, unsort=False, na_data=False)
-    assert len(x) % 4 == 0
+def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data, step=1):
+    x, y = make_multipart_parabolic_data(slope=slope, noise=noise, unsort=False, na_data=False, step=step)
     # add/reduce data in each season (create bias + +- noise)
-    seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4, axis=0).flatten()
+    seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4 +1, axis=0).flatten()
+    seasons = seasons[:len(x)]
     y[seasons == 1] += 0 + noise / 4
     y[seasons == 2] += 2 + noise / 4
     y[seasons == 3] += 0 + noise / 4
@@ -135,11 +137,11 @@ def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data):
     return test_dataframe
 
 
-def make_seasonal_multipart_sharp_change(slope, noise, unsort, na_data):
-    x, y = make_multipart_sharp_change_data(slope=slope, noise=noise, unsort=False, na_data=False)
-    assert len(x) % 4 == 0
+def make_seasonal_multipart_sharp_change(slope, noise, unsort, na_data, step=1):
+    x, y = make_multipart_sharp_change_data(slope=slope, noise=noise, unsort=False, na_data=False, step=step)
     # add/reduce data in each season (create bias + +- noise)
-    seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4, axis=0).flatten()
+    seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4 + 1, axis=0).flatten()
+    seasons = seasons[:len(x)]
     y[seasons == 1] += 0 + noise / 4
     y[seasons == 2] += 2 + noise / 4
     y[seasons == 3] += 0 + noise / 4
@@ -168,4 +170,3 @@ multipart_sharp_noises = [0, 0.5, 1, 5]
 slope_mod = 1e-2
 multipart_parabolic_slopes = [1 * slope_mod, -1 * slope_mod, 0]
 multipart_parabolic_noises = [0, 1, 5, 10, 20, 50]
-

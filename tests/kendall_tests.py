@@ -705,7 +705,7 @@ def test_get_best_data(show=False):
         recalc=False)
     fig, ax = mk.plot_acceptable_matches(key='znorm_joint')
     best = mk.get_maxz_breakpoints()
-    assert all([best[i]  == [(44, 55)][i] for i in range(len(best))])
+    assert all([best[i] == [(44, 55)][i] for i in range(len(best))])
     ax.set_title(f'para: {best=}')
 
     x_sharp, y_sharp = make_multipart_sharp_change_data(slope=multipart_sharp_slopes[0],
