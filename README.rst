@@ -360,3 +360,33 @@ The SeasonalMultiPartKendall is as per the MultiPartKendall, but with a seasonal
 .. figure:: figures/multi_smk_data2.png
     :height: 500 px
     :align: center
+
+Resource Requirements
+=======================
+
+Note that Mann Kendall tests require calculating the covariance matrix of the data, which creates a NxN matrix where N is the length of the data.  In addition the Multipart Kendall analysis requires indexing all possible combinations of data splits, which is a factorial problem.  As such, the resource requirements for these tests can be quite high.  The following table provides some rough estimates of the resource requirements for the tests.
+
+Theoretical memory requirements
+--------------------------------
+
+* N: 4 * s_array memory
+* 50: 8e-05 gb
+* 100: 0.00032 gb
+* 500: 0.008 gb
+* 1,000: 0.032 gb
+* 5,000: 0.8 gb
+* 10,000: 3.2 gb
+* 25,000: 20.0 gb
+* 50,000: 80.0 gb
+
+Processing Time
+-----------------
+
+The table of processing times was run on a single thread (11th Gen Intel(R) Core(TM) i5-11500H @ 2.90GHz with 32 GB of DDR4 RAM). If you want a processing time table for a different machine run:
+
+.. code-block:: bash
+
+    python kendall_multipart_kendall/tests/time_tests.py [outdir]
+
+
+# todo add table when it runs
