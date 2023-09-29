@@ -26,5 +26,6 @@ setup(
         "tables>=3.8.0",
 
     ],
-    python_requires=">=3.11"
+    python_requires=">=3.11",
+    include_package_data=True
 )
