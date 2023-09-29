@@ -142,8 +142,8 @@ def run_time_test(outdir=None):
         print(f'testing {npoints}')
         temp = timeit_test(function_names, npoints, n=use_n)
         outdata.loc[npoints] = pd.Series(temp)
-    print(f'saving results to {outdir.joinpath("time_test_results.csv")}')
-    outdata.to_csv(outdir.joinpath('time_test_results.csv'))
+    print(f'saving results to {outdir.joinpath("time_test_results.txt")}')
+    outdata.to_csv(outdir.joinpath('time_test_results.txt'))
 
 
 if __name__ == '__main__':
