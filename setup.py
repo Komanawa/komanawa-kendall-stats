@@ -15,6 +15,7 @@ setup(
     author_email="hansonmcoombs@gmail.com",
     packages=find_packages("src"),
     package_dir={"": "src"},
+    package_data={'kendall_stats':['*.txt']},
     setup_requires=[],
     tests_require=[],
     extras_require={},
