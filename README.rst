@@ -384,9 +384,12 @@ Processing Time
 
 The table of processing times was run on a single thread (11th Gen Intel(R) Core(TM) i5-11500H @ 2.90GHz with 32 GB of DDR4 RAM). If you want a processing time table for a different machine run:
 
-.. code-block:: bash
+.. code-block:: python
 
-    python kendall_multipart_kendall/tests/time_tests.py [outdir]
+    from pathlib import Path
+    from kendall_stats.time_tests import run_time_test
+    run_time_test(outdir=Path.home().joinpath('Downloads'))
+
 
 +---------+-----------------------+---------------------------+----------------------------------+------------------------------------------+----------------------------------+------------------------------------------+
 | npoints | MannKendall_time_test | SeasonalKendall_time_test | MultiPartKendall_2part_time_test | SeasonalMultiPartKendall_2part_time_test | MultiPartKendall_3part_time_test | SeasonalMultiPartKendall_3part_time_test |
