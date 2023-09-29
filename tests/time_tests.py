@@ -127,15 +127,20 @@ def run_time_test(outdir=None):
     else:
         outdir = Path(outdir)
     outdir.mkdir(exist_ok=True, parents=True)
-    all_npoints = ['50', '100', '500', '1000', '5000', '10000', '25000']
+    all_npoints = ['50', '100', '500', '1000']
     function_names = ['MannKendall_time_test', 'SeasonalKendall_time_test',
                       'MultiPartKendall_2part_time_test', 'SeasonalMultiPartKendall_2part_time_test',
                       'MultiPartKendall_3part_time_test', 'SeasonalMultiPartKendall_3part_time_test']
     outdata = pd.DataFrame(index=all_npoints, columns=function_names)
     outdata.index.name = 'npoints'
     for npoints in all_npoints:
+        if int(npoints) > 500:
+            use_n = 1
+
+        else:
+            use_n = 2
         print(f'testing {npoints}')
-        temp = timeit_test(function_names, npoints, n=5)
+        temp = timeit_test(function_names, npoints, n=use_n)
         outdata.loc[npoints] = pd.Series(temp)
     print(f'saving results to {outdir.joinpath("time_test_results.csv")}')
     outdata.to_csv(outdir.joinpath('time_test_results.csv'))
