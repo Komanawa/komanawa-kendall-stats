@@ -46,7 +46,9 @@ class MultiPartKendall():
     def __init__(self, data, nparts=2, expect_part=(1, -1), min_size=10,
                  alpha=0.05, no_trend_alpha=0.5,
                  data_col=None, rm_na=True,
-                 serialise_path=None, recalc=False, initalize=True):
+                 serialise_path=None,
+                 check_step=1, check_window=None,  # todo test
+                 recalc=False, initalize=True):
         """
         multi part mann kendall test to indentify a change point(s) in a time series
         after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
@@ -61,6 +63,13 @@ class MultiPartKendall():
         :param data_col: if data is a DataFrame or Series, the column to use
         :param rm_na: remove na values from the data
         :param serialise_path: path to serialised file (as hdf), if None will not serialise
+        :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point,
+                           if 2 will check every second point
+        :param check_window None or tuple (start_idx, end_idx) (one breakpoint only)
+                                 or list of tuples of len nparts-1 with a start/end idx for each part,
+                                 or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
+                             the window to check for breakpoints.  if None will use the whole data.  this is used to
+                             significantly speed up the mann kendall test
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
@@ -89,6 +98,8 @@ class MultiPartKendall():
                         no_trend_alpha=no_trend_alpha,
                         data_col=data_col,
                         rm_na=rm_na,
+                        check_step=check_step,
+                        check_window=check_window,
                         season_col=None)
             else:
                 self.serialise = False
@@ -103,6 +114,8 @@ class MultiPartKendall():
                                     no_trend_alpha=no_trend_alpha,
                                     data_col=data_col,
                                     rm_na=rm_na,
+                                    check_step=check_step,
+                                    check_window=check_window,
                                     season_col=None)
 
             if self.serialise and not loaded:
@@ -111,6 +124,7 @@ class MultiPartKendall():
     def __eq__(self, other):
         out = True
         out *= isinstance(other, self.__class__)
+        out *= self.check_step == other.check_step
         out *= self.data_col == other.data_col
         out *= self.rm_na == other.rm_na
         out *= self.season_col == other.season_col
@@ -122,6 +136,11 @@ class MultiPartKendall():
         datatype = type(self.data).__name__
         datatype_other = type(other.data).__name__
         out *= datatype == datatype_other
+
+        if self.check_window is None:
+            out *= other.check_window is None
+        else:
+            out *= np.allclose(self.check_window, other.check_window)
 
         if datatype == datatype_other:
             try:
@@ -162,6 +181,8 @@ class MultiPartKendall():
         """
         if not isinstance(other, self.__class__):
             print('problem with class: not same class: got ', type(other))
+        if not self.check_step == other.check_step:
+            print(f'problem with check step {self.check_step=} {other.check_step=}')
         if not self.data_col == other.data_col:
             print(f'problem with data col {self.data_col=} {other.data_col=}')
         if not self.rm_na == other.rm_na:
@@ -182,6 +203,13 @@ class MultiPartKendall():
         datatype_other = type(other.data).__name__
         if not datatype == datatype_other:
             print(f'problem with datatype {datatype=} {datatype_other=}')
+
+        if self.check_window is None:
+            if not other.check_window is None:
+                print(f'problem with check_window, should both be None {self.check_window=} {other.check_window=}')
+        else:
+            if not np.allclose(self.check_window, other.check_window):
+                print(f'problem with check_window {self.check_window=} {other.check_window=}')
 
         if datatype == datatype_other:
             try:
@@ -418,7 +446,7 @@ class MultiPartKendall():
         return fig, ax
 
     def _set_from_file(self, data, nparts, expect_part, min_size, alpha, no_trend_alpha, data_col, rm_na,
-                       season_col=None, check_inputs=True):
+                       check_step, check_window, season_col=None, check_inputs=True):
         """
         setup the class data from a serialised file, values are passed to ensure they are consistent
         :param check_inputs: bool, if True will check the inputs match the serialised file
@@ -428,6 +456,10 @@ class MultiPartKendall():
         assert isinstance(params, pd.Series)
         # other parameters
         self.alpha = params['alpha']
+        if 'check_step' in params.index:
+            self.check_step = int(params['check_step'])
+        else:
+            self.check_step = 1  # support legacy files
         self.no_trend_alpha = params['no_trend_alpha']
         self.nparts = int(params['nparts'])
         self.min_size = int(params['min_size'])
@@ -455,6 +487,25 @@ class MultiPartKendall():
         self.x = d1_data['x'].values
         self.idx_values = d1_data['idx_values'].values
         self.acceptable_matches = pd.read_hdf(self.serialise_path, 'acceptable_matches')
+
+        # check window
+        if 'check_window' in params_str.index:
+            temp = params_str['check_window']
+            assert temp == 'None'
+            self.check_window = None
+            self.int_check_window = None
+        else:
+            with pd.HDFStore(self.serialise_path, 'r') as store:
+                keys = [e.replace('/','') for e in store.keys()]
+            if not 'check_window' in keys:  # support legacy files
+                self.check_window = None
+                self.int_check_window = None
+            else:
+                temp = pd.read_hdf(self.serialise_path, 'check_window')
+                assert isinstance(temp, pd.DataFrame)
+                self.check_window = temp.values
+                temp = pd.Series(index=self.idx_values, data=np.arange(len(self.idx_values)))
+                self.int_check_window = temp[self.check_window.flatten()].reshape(self.check_window.shape)
 
         if datatype == 'pd.DataFrame':
             self.data = pd.read_hdf(self.serialise_path, 'data')
@@ -500,7 +551,14 @@ class MultiPartKendall():
             assert self.min_size == min_size, 'min_size does not match'
             assert self.alpha == alpha, 'alpha does not match'
             assert self.no_trend_alpha == no_trend_alpha, 'no_trend_alpha does not match'
+            assert self.check_step == check_step, 'check_step does not match'
             assert all(np.atleast_1d(self.expect_part) == np.atleast_1d(expect_part)), 'expect_part does not match'
+
+            if self.check_window is None:
+                assert check_window is None, 'check_window does not match'
+            else:
+                check_window = np.atleast_2d(check_window)
+                assert np.allclose(self.check_window, check_window), 'check_window does not match'
 
             # check datasets
             if datatype == 'pd.DataFrame':
@@ -511,7 +569,7 @@ class MultiPartKendall():
                 assert np.allclose(self.data, data)
 
     def _set_from_data(self, data, nparts, expect_part, min_size, alpha, no_trend_alpha, data_col, rm_na,
-                       season_col=None):
+                       check_step, check_window, season_col=None):
         """
         set up the class data from the input data
         :param data:
@@ -570,7 +628,33 @@ class MultiPartKendall():
             raise ValueError('the time series is too short for the minimum size')
         self.s_array = _make_s_array(x)
 
-        all_start_points = _generate_startpoints(n, self.min_size, self.nparts)
+        assert isinstance(check_step, int), f'{check_step=} must be an int'
+        assert check_step > 0, f'{check_step=} must be > 0'
+        self.check_step = check_step
+
+        if check_window is not None:
+            check_window = np.atleast_2d(check_window)
+            assert check_window.shape == (nparts - 1, 2), f'{check_window=} must have shape (nparts-1, 2)'
+            self.check_window = check_window
+
+            if isinstance(self.data, pd.DataFrame) or isinstance(self.data, pd.Series):
+                assert np.in1d(check_window.flatten(), self.data.index).all(), (
+                    'check_window contains values not in data index')
+                assert not self.data.loc[check_window.flatten()].isna().any(), ('check_window references nan values')
+            elif isinstance(self.data, np.ndarray):
+                assert set(check_window.flatten()).issubset(np.arange(len(self.data)))
+                assert not np.isnan(self.data[check_window.flatten()]).any(), 'check_window references nan values'
+
+            temp = pd.Series(index=self.idx_values, data=np.arange(len(self.idx_values)))
+            self.int_check_window = temp[self.check_window.flatten()].reshape(self.check_window.shape)
+            assert (self.int_check_window.flatten() >= self.min_size).all(), 'check_window contains values < min_size'
+            assert (self.n - self.int_check_window.flatten() >= self.min_size).all(), (
+                'n - check_window contains values <min_size')
+        else:
+            self.check_window = None
+            self.int_check_window = None
+
+        all_start_points = _generate_startpoints(n, self.min_size, self.nparts, self.check_step, self.int_check_window)
         datasets = {f'p{i}': [] for i in range(nparts)}
         self.all_start_points = all_start_points
         self.datasets = datasets
@@ -673,6 +757,12 @@ class MultiPartKendall():
             for part in range(self.nparts):
                 self.datasets[f'p{part}'].astype(float).to_hdf(hdf, f'part{part}', complevel=complevel, complib=complib)
 
+            # check_window
+            if self.check_window is not None:
+                pd.DataFrame(self.check_window).to_hdf(hdf, 'check_window', complevel=complevel, complib=complib)
+            else:
+                params_str['check_window'] = 'None'
+
             # other parameters
             params['alpha'] = self.alpha
             params['no_trend_alpha'] = self.no_trend_alpha
@@ -680,6 +770,7 @@ class MultiPartKendall():
             params['min_size'] = float(self.min_size)
             params['rm_na'] = float(self.rm_na)
             params['n'] = float(self.n)
+            params['check_step'] = float(self.check_step)
             if self.freq_limit is not None:
                 params['freq_limit'] = float(self.freq_limit)
             for i in range(self.nparts):
@@ -704,7 +795,9 @@ class MultiPartKendall():
         mpk.serialise_path = Path(path)
         mpk.serialise = True
         mpk._set_from_file(data=None, nparts=None, expect_part=None, min_size=None, alpha=None, no_trend_alpha=None,
-                           data_col=None, rm_na=None, season_col=None, check_inputs=False)
+                           data_col=None, rm_na=None,
+                           check_step=None, check_window=None,
+                           season_col=None, check_inputs=False)
         return mpk
 
 
@@ -738,7 +831,9 @@ class SeasonalMultiPartKendall(MultiPartKendall):
     def __init__(self, data, data_col, season_col, nparts=2, expect_part=(1, -1), min_size=10,
                  alpha=0.05, no_trend_alpha=0.5,
                  rm_na=True,
-                 serialise_path=None, freq_limit=0.05, recalc=False, initalize=True):
+                 serialise_path=None, freq_limit=0.05,
+                 check_step=1, check_window=None,
+                 recalc=False, initalize=True):
         """
         multi part seasonal mann kendall test to indentify a change point(s) in a time series
         after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
@@ -753,6 +848,13 @@ class SeasonalMultiPartKendall(MultiPartKendall):
         :param no_trend_alpha: significance level for no trend e.g. will accept if p> no_trend_alpha
         :param rm_na: remove na values from the data
         :param serialise_path: path to serialised file (as hdf), if None will not serialise
+        :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point,
+                           if 2 will check every second point
+        :param check_window None or tuple (start_idx, end_idx) (one breakpoint only)
+                                 or list of tuples of len nparts-1 with a start/end idx for each part,
+                                 or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
+                             the window to check for breakpoints.  if None will use the whole data.  this is used to
+                             significantly speed up the mann kendall test
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
@@ -781,6 +883,8 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                         no_trend_alpha=no_trend_alpha,
                         data_col=data_col,
                         rm_na=rm_na,
+                        check_step=check_step,
+                        check_window=check_window,
                         season_col=season_col)
             else:
                 self.serialise = False
@@ -795,6 +899,8 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                                     no_trend_alpha=no_trend_alpha,
                                     data_col=data_col,
                                     rm_na=rm_na,
+                                    check_step=check_step,
+                                    check_window=check_window,
                                     season_col=season_col)
 
             if self.serialise and not loaded:
@@ -816,7 +922,9 @@ class SeasonalMultiPartKendall(MultiPartKendall):
         mpk.serialise = True
         mpk._set_from_file(data=None, nparts=None, expect_part=None, min_size=None,
                            alpha=None, no_trend_alpha=None, data_col=None,
-                           rm_na=None, season_col=None, check_inputs=False)
+                           rm_na=None, check_step=None,
+                           check_window=None,
+                           season_col=None, check_inputs=False)
         return mpk
 
     def _calc_mann_kendall(self):

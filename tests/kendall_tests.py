@@ -342,6 +342,8 @@ def test_generate_startpoints():
     part3 = _generate_startpoints(n=len(x), min_size=10, nparts=3, test=True)
     part2 = _generate_startpoints(n=len(x), min_size=10, nparts=2, test=True)
 
+    # todo test check_step and check_window
+
     if write_test_data:
         np.savez_compressed(save_path, part4=part4, part3=part3, part2=part2)
     else:
@@ -731,6 +733,12 @@ def test_get_best_data(show=False):
     if show:
         plt.show()
     plt.close('all')
+
+def test_check_step_window_mpmk(): # todo
+    raise NotImplementedError
+
+def test_check_step_window_smpmk(): # todo
+    raise NotImplementedError
 
 
 if __name__ == '__main__':
