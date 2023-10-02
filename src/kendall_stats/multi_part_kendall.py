@@ -496,7 +496,7 @@ class MultiPartKendall():
             self.int_check_window = None
         else:
             with pd.HDFStore(self.serialise_path, 'r') as store:
-                keys = [e.replace('/','') for e in store.keys()]
+                keys = [e.replace('/', '') for e in store.keys()]
             if not 'check_window' in keys:  # support legacy files
                 self.check_window = None
                 self.int_check_window = None
@@ -505,7 +505,7 @@ class MultiPartKendall():
                 assert isinstance(temp, pd.DataFrame)
                 self.check_window = temp.values
                 temp = pd.Series(index=self.idx_values, data=np.arange(len(self.idx_values)))
-                self.int_check_window = temp[self.check_window.flatten()].reshape(self.check_window.shape)
+                self.int_check_window = temp[self.check_window.flatten()].values.reshape(self.check_window.shape)
 
         if datatype == 'pd.DataFrame':
             self.data = pd.read_hdf(self.serialise_path, 'data')
@@ -640,13 +640,18 @@ class MultiPartKendall():
             if isinstance(self.data, pd.DataFrame) or isinstance(self.data, pd.Series):
                 assert np.in1d(check_window.flatten(), self.data.index).all(), (
                     'check_window contains values not in data index')
-                assert not self.data.loc[check_window.flatten()].isna().any(), ('check_window references nan values')
+                assert not self.data.loc[check_window.flatten(), self.data_col].isna().any(), (
+                    'check_window references nan values')
+                if self.season_col is not None:
+                    assert not self.data.loc[check_window.flatten(), self.season_col].isna().any(), (
+                        'check_window references nan values')
+
             elif isinstance(self.data, np.ndarray):
                 assert set(check_window.flatten()).issubset(np.arange(len(self.data)))
                 assert not np.isnan(self.data[check_window.flatten()]).any(), 'check_window references nan values'
 
             temp = pd.Series(index=self.idx_values, data=np.arange(len(self.idx_values)))
-            self.int_check_window = temp[self.check_window.flatten()].reshape(self.check_window.shape)
+            self.int_check_window = temp[self.check_window.flatten()].values.reshape(self.check_window.shape)
             assert (self.int_check_window.flatten() >= self.min_size).all(), 'check_window contains values < min_size'
             assert (self.n - self.int_check_window.flatten() >= self.min_size).all(), (
                 'n - check_window contains values <min_size')

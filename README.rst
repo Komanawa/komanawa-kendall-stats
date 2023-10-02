@@ -382,7 +382,7 @@ Theoretical memory requirements
 Processing Time
 -----------------
 
-The table of processing times was run on a single thread (11th Gen Intel(R) Core(TM) i5-11500H @ 2.90GHz with 32 GB of DDR4 RAM). If you want a processing time table for a different machine run:
+The table of processing times was run on a single thread (11th Gen Intel(R) Core(TM) i5-11500H @ 2.90GHz with 32 GB of DDR4 RAM). If you want a processing time table for a different machine run the results are in seconds:
 
 .. code-block:: python
 
@@ -390,6 +390,7 @@ The table of processing times was run on a single thread (11th Gen Intel(R) Core
     from kendall_stats.time_tests import run_time_test
     run_time_test(outdir=Path.home().joinpath('Downloads'))
 
+Note that this may take some time
 
 +---------+-----------------------+---------------------------+----------------------------------+------------------------------------------+----------------------------------+------------------------------------------+
 | npoints | MannKendall_time_test | SeasonalKendall_time_test | MultiPartKendall_2part_time_test | SeasonalMultiPartKendall_2part_time_test | MultiPartKendall_3part_time_test | SeasonalMultiPartKendall_3part_time_test |
@@ -403,3 +404,24 @@ The table of processing times was run on a single thread (11th Gen Intel(R) Core
 | 1000    | 9.40E-03              | 3.36E-02                  | 7.65E-01                         | 6.40E+00                                 | 1.27E+02                         | 6.91E+02                                 |
 +---------+-----------------------+---------------------------+----------------------------------+------------------------------------------+----------------------------------+------------------------------------------+
 
+Options for reduced computational requirements (MultipartMannKendall and MultipartSeasonalMannKendall)
+---------------------------------------------------------------------------------------------------------
+
+The MultipartMannKendall and MultipartSeasonalMannKendall classes have a two options to reduce the computational requirements of the analysis.  These options are:
+
+1. changing the check_step parameter, which controls the step size of the data splits (e.g. when check_step=1, all possible data splits are checked, when check_step=2, every second data split is checked, etc.)
+2. changing the check_window parameter, which controls the data which will be checked for matches.  For example when check_window=None all data splits will be checked, when check_window=(30,60) for a two part kendall only data splits between 30 and 60 will be checked.  Similarly, when check_window=[(30,50), (60,80) for a three part kendall only data splits between 30 and 50, and 60 and 80 will be checked for the first and and second breakpoints, respectively.
+
+Either of these options can significantly reduce the runtime of the analysis, but may influance the choice of breakpoint, so use these options with care.  The table below demonstrates the time gains from these approaches on a MultipartMannKendall with 1000 datapoints. Results are in seconds.  Note that the full s_array (nxn) is still calculated, so these approaches will not reduce the memory requirements of the analysis.
+
++----------+--------------+--------------------+--------------------+-------------------+-------------------+
+|          | window: None | window: (300, 700) | window: (400, 600) | window: (450,550) | window: (475,525) |
++==========+==============+====================+====================+===================+===================+
+| step: 1  | 0.68         | 0.27               | 0.18               | 0.08              | 0.10              |
++----------+--------------+--------------------+--------------------+-------------------+-------------------+
+| step: 2  | 0.35         | 0.18               | 0.08               | 0.08              | 0.04              |
++----------+--------------+--------------------+--------------------+-------------------+-------------------+
+| step: 5  | 0.20         | 0.07               | 0.08               | 0.03              | 0.07              |
++----------+--------------+--------------------+--------------------+-------------------+-------------------+
+| step: 10 | 0.10         | 0.09               | 0.03               | 0.07              | 0.03              |
++----------+--------------+--------------------+--------------------+-------------------+-------------------+

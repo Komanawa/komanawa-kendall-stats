@@ -391,16 +391,15 @@ def test_generate_startpoints():
                             part2_check_window_step=part2_check_window_step,
 
                             )
-    else:
-        expect = np.load(save_path)
-        check_keys = [
-            'part4', 'part3', 'part2',
-            'part4_check_step', 'part3_check_step', 'part2_check_step',
-            'part4_check_window', 'part3_check_window', 'part2_check_window',
-            'part4_check_window_step', 'part3_check_window_step', 'part2_check_window_step',
-        ]
-        for k in check_keys:
-            assert np.allclose(eval(k), expect['k']), f'{k} failed'
+    expect = np.load(save_path)
+    check_keys = [
+        'part4', 'part3', 'part2',
+        'part4_check_step', 'part3_check_step', 'part2_check_step',
+        'part4_check_window', 'part3_check_window', 'part2_check_window',
+        'part4_check_window_step', 'part3_check_window_step', 'part2_check_window_step',
+    ]
+    for k in check_keys:
+        assert np.allclose(eval(k), expect[k]), f'{k} failed'
 
 
 def test_multipart_plotting(show=False):
@@ -785,18 +784,163 @@ def test_get_best_data(show=False):
     plt.close('all')
 
 
-def test_check_step_window_mpmk():  # todo
-    raise NotImplementedError
+def test_check_step_window_mpmk():
+    save_paths = {}
+    names = ['mk_check_step', 'mk_check_window', 'mk_check_window_step']
+    for name in names:
+        save_paths[name] = Path(__file__).parent.joinpath('test_data', f'{name}.hdf')
+    write_test_data = False
+    x, data = make_multipart_parabolic_data(slope=multipart_parabolic_slopes[0],
+                                            noise=multipart_parabolic_noises[1],
+                                            unsort=False, na_data=False)
+
+    org_mk = MultiPartKendall(data, nparts=3,
+                              expect_part=(1, 0, -1),
+                              min_size=10,
+                              alpha=0.05, no_trend_alpha=0.5,
+                              data_col=None, rm_na=True,
+                              serialise_path=None,
+                              check_step=1,
+                              check_window=None,
+                              )
+
+    mk_check_step = MultiPartKendall(data, nparts=3,
+                                     expect_part=(1, 0, -1),
+                                     min_size=10,
+                                     alpha=0.05, no_trend_alpha=0.5,
+                                     data_col=None, rm_na=True,
+                                     serialise_path=None,
+                                     check_step=3,
+                                     check_window=None,
+                                     )
+
+    mk_check_window = MultiPartKendall(data, nparts=3,
+                                       expect_part=(1, 0, -1),
+                                       min_size=10,
+                                       alpha=0.05, no_trend_alpha=0.5,
+                                       data_col=None, rm_na=True,
+                                       serialise_path=None,
+                                       check_step=1,
+                                       check_window=[(15, 30), (60, 80)],
+                                       )
+
+    mk_check_window_step = MultiPartKendall(data, nparts=3,
+                                            expect_part=(1, 0, -1),
+                                            min_size=10,
+                                            alpha=0.05, no_trend_alpha=0.5,
+                                            data_col=None, rm_na=True,
+                                            serialise_path=None,
+                                            check_step=3,
+                                            check_window=[(15, 30), (60, 80)],
+                                            )
+
+    # check serialisation/ against saved data
+    if write_test_data:
+        for k, op in save_paths.items():
+            t = eval(k)
+            assert isinstance(t, MultiPartKendall)
+            t.to_file(op)
+
+    for k, op in save_paths.items():
+        t = eval(k)
+        assert isinstance(t, MultiPartKendall)
+        t1 = MultiPartKendall.from_file(op)
+        assert t == t1
+
+    # check results compared to orignial
+    org_accept = org_mk.get_acceptable_matches()
+    mk_check_step_accept = mk_check_step.get_acceptable_matches()
+    mk_check_window_accept = mk_check_window.get_acceptable_matches()
+    mk_check_window_step_accept = mk_check_window_step.get_acceptable_matches()
+
+    for df in [mk_check_step_accept, mk_check_window_accept, mk_check_window_step_accept]:
+        assert isinstance(df, pd.DataFrame)
+        temp = org_accept.loc[df.index]
+        check_cols = [c for c in df.columns if 'znorm' not in c]
+        assert len(check_cols) == 6 * 3
+        pd.testing.assert_frame_equal(temp[check_cols], df[check_cols])
 
 
-def test_check_step_window_smpmk():  # todo
-    raise NotImplementedError
+def test_check_step_window_smpmk():
+    save_paths = {}
+    names = ['smk_check_step', 'smk_check_window', 'smk_check_window_step']
+    for name in names:
+        save_paths[name] = Path(__file__).parent.joinpath('test_data', f'{name}.hdf')
+    write_test_data = False
+    data = make_seasonal_multipart_parabolic(slope=multipart_parabolic_slopes[0],
+                                             noise=multipart_parabolic_noises[1],
+                                             unsort=False, na_data=False)
+
+    org_smk = SeasonalMultiPartKendall(data, nparts=3,
+                                       expect_part=(1, 0, -1),
+                                       min_size=10,
+                                       alpha=0.05, no_trend_alpha=0.5,
+                                       data_col='y', season_col='seasons', rm_na=True,
+                                       serialise_path=None,
+                                       check_step=1,
+                                       check_window=None,
+                                       )
+
+    smk_check_step = SeasonalMultiPartKendall(data, nparts=3,
+                                              expect_part=(1, 0, -1),
+                                              min_size=10,
+                                              alpha=0.05, no_trend_alpha=0.5,
+                                              data_col='y', season_col='seasons', rm_na=True,
+                                              serialise_path=None,
+                                              check_step=3,
+                                              check_window=None,
+                                              )
+
+    smk_check_window = SeasonalMultiPartKendall(data, nparts=3,
+                                                expect_part=(1, 0, -1),
+                                                min_size=10,
+                                                alpha=0.05, no_trend_alpha=0.5,
+                                                data_col='y', season_col='seasons', rm_na=True,
+                                                serialise_path=None,
+                                                check_step=1,
+                                                check_window=[(15, 30), (60, 80)],
+                                                )
+
+    smk_check_window_step = SeasonalMultiPartKendall(data, nparts=3,
+                                                     expect_part=(1, 0, -1),
+                                                     min_size=10,
+                                                     alpha=0.05, no_trend_alpha=0.5,
+                                                     data_col='y', season_col='seasons', rm_na=True,
+                                                     serialise_path=None,
+                                                     check_step=3,
+                                                     check_window=[(15, 30), (60, 80)],
+                                                     )
+
+    # check serialisation/ against saved data
+    if write_test_data:
+        for k, op in save_paths.items():
+            t = eval(k)
+            assert isinstance(t, SeasonalMultiPartKendall)
+            t.to_file(op)
+
+    for k, op in save_paths.items():
+        t = eval(k)
+        assert isinstance(t, SeasonalMultiPartKendall)
+        t1 = SeasonalMultiPartKendall.from_file(op)
+        assert isinstance(t1, SeasonalMultiPartKendall)
+
+        assert t == t1
+
+    # check results compared to orignial
+    org_accept = org_smk.get_acceptable_matches()
+    smk_check_step_accept = smk_check_step.get_acceptable_matches()
+    smk_check_window_accept = smk_check_window.get_acceptable_matches()
+    smk_check_window_step_accept = smk_check_window_step.get_acceptable_matches()
+
+    for df in [smk_check_step_accept, smk_check_window_accept, smk_check_window_step_accept]:
+        assert isinstance(df, pd.DataFrame)
+        temp = org_accept.loc[df.index]
+        check_cols = [c for c in df.columns if 'znorm' not in c]
+        assert len(check_cols) == 6 * 3
+        pd.testing.assert_frame_equal(temp[check_cols], df[check_cols])
 
 
 if __name__ == '__main__':
-
-    raise NotImplementedError  # todo DADB
-
     # data plots
     plot_seasonal_multipart_sharp(show=False)
     plot_seasonal_multipart_para(show=False)
@@ -820,3 +964,5 @@ if __name__ == '__main__':
     test_seasonal_multipart_serialisation()
     test_seasonal_multipart_kendall(show=False, print_total=False)
     test_get_best_data()
+    test_check_step_window_mpmk()
+    test_check_step_window_smpmk()
