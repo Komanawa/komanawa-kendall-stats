@@ -121,7 +121,7 @@ def test_all_functions():
     SeasonalMultiPartKendall_3part_time_test(use_npoints)
 
 
-def run_time_test(outdir=None, all_npoints=['50', '100', '500', '1000', '5000', '10000'],
+def run_time_test(outdir=None, all_npoints=['50', '100', '500', '1000'],
                   function_names=['MannKendall_time_test', 'SeasonalKendall_time_test',
                                   'MultiPartKendall_2part_time_test', 'SeasonalMultiPartKendall_2part_time_test',
                                   'MultiPartKendall_3part_time_test', 'SeasonalMultiPartKendall_3part_time_test']
@@ -144,7 +144,6 @@ def run_time_test(outdir=None, all_npoints=['50', '100', '500', '1000', '5000', 
     else:
         outdir = Path(outdir)
     outdir.mkdir(exist_ok=True)
-    all_npoints = ['5000', '10000']  # todo DADB
 
     outdata = pd.DataFrame(index=all_npoints, columns=function_names)
     outdata.index.name = 'npoints'
@@ -158,11 +157,8 @@ def run_time_test(outdir=None, all_npoints=['50', '100', '500', '1000', '5000', 
         temp = timeit_test(function_names, npoints, n=use_n)
         outdata.loc[npoints] = pd.Series(temp)
     print(f'saving results to {outdir.joinpath("time_test_results.txt")}')
-    outdata.to_csv(outdir.joinpath('time_test_results2.txt'))  # todo DADB
-    # outdata.to_csv(outdir.joinpath('time_test_results.txt')) # todo uncomment
+    outdata.to_csv(outdir.joinpath('time_test_results.txt'))
 
-
-# todo run, then update tables
 
 if __name__ == '__main__':
     args = sys.argv
