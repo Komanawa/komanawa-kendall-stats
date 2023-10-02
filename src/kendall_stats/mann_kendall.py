@@ -219,23 +219,33 @@ def _generate_startpoints(n, min_size, nparts, check_step=1, check_window=None, 
             ), axis=1)
             sizes = np.diff(temp, axis=1)
             all_start_points_out = all_start_points_out[np.all(sizes >= min_size, axis=1)]
-            if test:
-                temp = np.concatenate((
-                    np.array(all_start_points_out),
-                    np.full((len(all_start_points_out), 1), n)
-
-                ), axis=1)
-                sizes = np.diff(temp, axis=1)
-                assert np.all(sizes >= min_size)
     else:
-        if nparts == 2: # todo check
-            all_start_points_out = np.arange(check_window[0,0], check_window[0,1]+check_step, check_step)[:, np.newaxis]
-        else: # todo check
+        check_window = np.atleast_2d(check_window)
+        if nparts == 2:
+            all_start_points_out = np.arange(check_window[0, 0], check_window[0, 1] + check_step, check_step)[:,
+                                   np.newaxis]
+        else:
             all_start_points = []
             for part in range(nparts - 1):
-                start_points = np.arange(check_window[part,0], check_window[part,1]+check_step, check_step)
+                start_points = np.arange(check_window[part, 0], check_window[part, 1] + check_step, check_step)
                 all_start_points.append(start_points)
             all_start_points_out = np.array(list(itertools.product(*all_start_points)))
+            temp = np.concatenate((
+                np.array(all_start_points_out),
+                np.full((len(all_start_points_out), 1), n)
+
+            ), axis=1)
+            sizes = np.diff(temp, axis=1)
+            all_start_points_out = all_start_points_out[np.all(sizes >= min_size, axis=1)]
+
+    if test:
+        temp = np.concatenate((
+            np.array(all_start_points_out),
+            np.full((len(all_start_points_out), 1), n)
+
+        ), axis=1)
+        sizes = np.diff(temp, axis=1)
+        assert np.all(sizes >= min_size)
     return all_start_points_out
 
 

@@ -342,15 +342,65 @@ def test_generate_startpoints():
     part3 = _generate_startpoints(n=len(x), min_size=10, nparts=3, test=True)
     part2 = _generate_startpoints(n=len(x), min_size=10, nparts=2, test=True)
 
-    # todo test check_step and check_window
+    # test check_step
+    part4_check_step = _generate_startpoints(n=len(x), min_size=10, nparts=4, test=True, check_step=2)
+    part3_check_step = _generate_startpoints(n=len(x), min_size=10, nparts=3, test=True, check_step=2)
+    part2_check_step = _generate_startpoints(n=len(x), min_size=10, nparts=2, test=True, check_step=2)
+
+    #  test check_window
+    part4_check_window = _generate_startpoints(n=len(x), min_size=10, nparts=4, test=True,
+                                               check_window=[
+                                                   (10, 20),
+                                                   (40, 50),
+                                                   (60, 70),
+                                               ])
+    part3_check_window = _generate_startpoints(n=len(x), min_size=10, nparts=3, test=True,
+                                               check_window=[
+                                                   (20, 50),
+                                                   (50, 70),
+
+                                               ])
+    part2_check_window = _generate_startpoints(n=len(x), min_size=10, nparts=2, test=True, check_window=(20, 50))
+
+    # check both check_step and check_window
+    part4_check_window_step = _generate_startpoints(n=len(x), min_size=10, nparts=4, test=True,
+                                                    check_window=[
+                                                        (10, 20),
+                                                        (40, 50),
+                                                        (60, 70),
+                                                    ], check_step=3)
+    part3_check_window_step = _generate_startpoints(n=len(x), min_size=10, nparts=3, test=True,
+                                                    check_window=[
+                                                        (20, 50),
+                                                        (50, 70),
+
+                                                    ], check_step=3)
+    part2_check_window_step = _generate_startpoints(n=len(x), min_size=10, nparts=2, test=True, check_window=(20, 50),
+                                                    check_step=3)
 
     if write_test_data:
-        np.savez_compressed(save_path, part4=part4, part3=part3, part2=part2)
+        np.savez_compressed(save_path, part4=part4, part3=part3, part2=part2,
+                            part4_check_step=part4_check_step,
+                            part3_check_step=part3_check_step,
+                            part2_check_step=part2_check_step,
+                            part4_check_window=part4_check_window,
+                            part3_check_window=part3_check_window,
+                            part2_check_window=part2_check_window,
+                            part4_check_window_step=part4_check_window_step,
+                            part3_check_window_step=part3_check_window_step,
+                            part2_check_window_step=part2_check_window_step,
+
+                            )
     else:
         expect = np.load(save_path)
-        assert np.allclose(part4, expect['part4'])
-        assert np.allclose(part3, expect['part3'])
-        assert np.allclose(part2, expect['part2'])
+        check_keys = [
+            'part4', 'part3', 'part2',
+            'part4_check_step', 'part3_check_step', 'part2_check_step',
+            'part4_check_window', 'part3_check_window', 'part2_check_window',
+            'part4_check_window_step', 'part3_check_window_step', 'part2_check_window_step',
+        ]
+        for k in check_keys:
+            assert np.allclose(eval(k), expect['k']), f'{k} failed'
 
 
 def test_multipart_plotting(show=False):
@@ -734,14 +784,19 @@ def test_get_best_data(show=False):
         plt.show()
     plt.close('all')
 
-def test_check_step_window_mpmk(): # todo
+
+def test_check_step_window_mpmk():  # todo
     raise NotImplementedError
 
-def test_check_step_window_smpmk(): # todo
+
+def test_check_step_window_smpmk():  # todo
     raise NotImplementedError
 
 
 if __name__ == '__main__':
+
+    raise NotImplementedError  # todo DADB
+
     # data plots
     plot_seasonal_multipart_sharp(show=False)
     plot_seasonal_multipart_para(show=False)

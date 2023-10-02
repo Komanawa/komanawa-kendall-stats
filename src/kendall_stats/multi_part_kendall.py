@@ -47,7 +47,7 @@ class MultiPartKendall():
                  alpha=0.05, no_trend_alpha=0.5,
                  data_col=None, rm_na=True,
                  serialise_path=None,
-                 check_step=1, check_window=None,  # todo test
+                 check_step=1, check_window=None,
                  recalc=False, initalize=True):
         """
         multi part mann kendall test to indentify a change point(s) in a time series
