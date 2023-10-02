@@ -39,4 +39,4 @@ def estimate_runtime(npoints, func, plot=False):
 if __name__ == '__main__':
     for f in ['MannKendall', 'SeasonalKendall', 'MultiPartKendall_2part', 'SeasonalMultiPartKendall_2part',
                         'MultiPartKendall_3part', 'SeasonalMultiPartKendall_3part']:
-        print(estimate_runtime(np.array([500, 1000,5000,10000]), f, plot=True))
+        print(f, estimate_runtime(np.array([500, 1000,5000,10000]), f, plot=False))
