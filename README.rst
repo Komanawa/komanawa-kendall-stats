@@ -382,7 +382,7 @@ Theoretical memory requirements
 Processing Time
 -----------------
 
-The table of processing times was run on a single thread (11th Gen Intel(R) Core(TM) i5-11500H @ 2.90GHz with 32 GB of DDR4 RAM). If you want a processing time table for a different machine run the results are in seconds:
+The table of processing times was run on a single thread (11th Gen Intel(R) Core(TM) i5-11500H @ 2.90GHz with 32 GB of DDR4 RAM). The results are in seconds If you want a processing time table for a different machine run:
 
 .. code-block:: python
 
