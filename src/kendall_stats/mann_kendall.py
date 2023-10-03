@@ -2,7 +2,6 @@
 created matt_dumont
 on: 14/09/23
 """
-import itertools
 import numpy as np
 import pandas as pd
 from scipy.stats import norm, mstats
@@ -194,59 +193,6 @@ def _mann_kendall_old(x, alpha=0.05):
         trend = 0
 
     return trend, h, p, z, s, var_s
-
-
-def _generate_startpoints(n, min_size, nparts, check_step=1, check_window=None, test=False):
-    if check_window is None:
-        if nparts == 2:
-            all_start_points_out = np.arange(min_size, n - min_size, check_step)[:, np.newaxis]
-            if test:
-                assert ((all_start_points_out - 0 >= min_size) & (n - all_start_points_out >= min_size)).all()
-        else:
-            all_start_points = []
-            for part in range(nparts - 1):
-                start_points = np.arange(min_size + min_size * part, n - (min_size * (nparts - 1 - part)), check_step)
-                all_start_points.append(start_points)
-
-            all_start_points_out = np.array(list(itertools.product(*all_start_points)))
-            all_start_points_out = all_start_points_out[np.all(
-                [all_start_points_out[:, i] < all_start_points_out[:, i + 1] for i in range(nparts - 2)],
-                axis=0)]
-            temp = np.concatenate((
-                np.array(all_start_points_out),
-                np.full((len(all_start_points_out), 1), n)
-
-            ), axis=1)
-            sizes = np.diff(temp, axis=1)
-            all_start_points_out = all_start_points_out[np.all(sizes >= min_size, axis=1)]
-    else:
-        check_window = np.atleast_2d(check_window)
-        if nparts == 2:
-            all_start_points_out = np.arange(check_window[0, 0], check_window[0, 1] + check_step, check_step)[:,
-                                   np.newaxis]
-        else:
-            all_start_points = []
-            for part in range(nparts - 1):
-                start_points = np.arange(check_window[part, 0], check_window[part, 1] + check_step, check_step)
-                all_start_points.append(start_points)
-            all_start_points_out = np.array(list(itertools.product(*all_start_points)))
-            temp = np.concatenate((
-                np.array(all_start_points_out),
-                np.full((len(all_start_points_out), 1), n)
-
-            ), axis=1)
-            sizes = np.diff(temp, axis=1)
-            all_start_points_out = all_start_points_out[np.all(sizes >= min_size, axis=1)]
-
-    if test:
-        temp = np.concatenate((
-            np.array(all_start_points_out),
-            np.full((len(all_start_points_out), 1), n)
-
-        ), axis=1)
-        sizes = np.diff(temp, axis=1)
-        assert np.all(sizes >= min_size)
-    return all_start_points_out
 
 
 def _old_smk(df, data_col, season_col, alpha=0.05, rm_na=True):

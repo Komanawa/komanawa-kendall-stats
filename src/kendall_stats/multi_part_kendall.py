@@ -12,8 +12,62 @@ from matplotlib.lines import Line2D
 from pathlib import Path
 from copy import deepcopy
 from scipy.stats import mstats
+import itertools
 from kendall_stats.mann_kendall import _mann_kendall_from_sarray, _seasonal_mann_kendall_from_sarray, \
-    _calc_seasonal_senslope, get_colors, _generate_startpoints, _make_s_array
+    _calc_seasonal_senslope, get_colors, _make_s_array
+
+
+def _generate_startpoints(n, min_size, nparts, check_step=1, check_window=None, test=False):
+    if check_window is None:
+        if nparts == 2:
+            all_start_points_out = np.arange(min_size, n - min_size, check_step)[:, np.newaxis]
+            if test:
+                assert ((all_start_points_out - 0 >= min_size) & (n - all_start_points_out >= min_size)).all()
+        else:
+            all_start_points = []
+            for part in range(nparts - 1):
+                start_points = np.arange(min_size + min_size * part, n - (min_size * (nparts - 1 - part)), check_step)
+                all_start_points.append(start_points)
+
+            all_start_points_out = np.array(list(itertools.product(*all_start_points)))
+            all_start_points_out = all_start_points_out[np.all(
+                [all_start_points_out[:, i] < all_start_points_out[:, i + 1] for i in range(nparts - 2)],
+                axis=0)]
+            temp = np.concatenate((
+                np.array(all_start_points_out),
+                np.full((len(all_start_points_out), 1), n)
+
+            ), axis=1)
+            sizes = np.diff(temp, axis=1)
+            all_start_points_out = all_start_points_out[np.all(sizes >= min_size, axis=1)]
+    else:
+        check_window = np.atleast_2d(check_window)
+        if nparts == 2:
+            all_start_points_out = np.arange(check_window[0, 0], check_window[0, 1] + check_step, check_step)[:,
+                                   np.newaxis]
+        else:
+            all_start_points = []
+            for part in range(nparts - 1):
+                start_points = np.arange(check_window[part, 0], check_window[part, 1] + check_step, check_step)
+                all_start_points.append(start_points)
+            all_start_points_out = np.array(list(itertools.product(*all_start_points)))
+            temp = np.concatenate((
+                np.array(all_start_points_out),
+                np.full((len(all_start_points_out), 1), n)
+
+            ), axis=1)
+            sizes = np.diff(temp, axis=1)
+            all_start_points_out = all_start_points_out[np.all(sizes >= min_size, axis=1)]
+
+    if test:
+        temp = np.concatenate((
+            np.array(all_start_points_out),
+            np.full((len(all_start_points_out), 1), n)
+
+        ), axis=1)
+        sizes = np.diff(temp, axis=1)
+        assert np.all(sizes >= min_size)
+    return all_start_points_out
 
 
 class MultiPartKendall():
@@ -69,7 +123,9 @@ class MultiPartKendall():
                                  or list of tuples of len nparts-1 with a start/end idx for each part,
                                  or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
                              the window to check for breakpoints.  if None will use the whole data.  this is used to
-                             significantly speed up the mann kendall test
+                             significantly speed up the mann kendall test. Note that check_step still applies to the
+                             check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points
+                                (2, 4, 6))
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
@@ -859,7 +915,9 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                                  or list of tuples of len nparts-1 with a start/end idx for each part,
                                  or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
                              the window to check for breakpoints.  if None will use the whole data.  this is used to
-                             significantly speed up the mann kendall test
+                             significantly speed up the mann kendall test Note that check_step still applies to the
+                             check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points
+                                (2, 4, 6))
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
