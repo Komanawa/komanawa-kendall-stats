@@ -448,7 +448,7 @@ class MannKendall(object):
         senslope, senintercept, lo_slope, up_slope = mstats.theilslopes(self.data, self.data.index, alpha=self.alpha)
         return senslope, senintercept, lo_slope, up_slope
 
-    def plot_data(self, ax=None):
+    def plot_data(self, ax=None, **kwargs):
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:
@@ -459,8 +459,9 @@ class MannKendall(object):
         x = self.data.index
         y = x * sslope + sintercept
         ax.plot(x, y, color='k', ls='--', label=f'sen slope fit')
-
-        ax.scatter(self.data.index, self.data.values, c='k', label=f'raw data')
+        if 'color' not in kwargs:
+            kwargs['color'] = 'k'
+        ax.scatter(self.data.index, self.data.values, label=f'raw data', **kwargs)
 
         handles, labels = ax.get_legend_handles_labels()
         handles.append(Line2D([0], [0], color='w', ls='--'))
@@ -541,7 +542,7 @@ class SeasonalKendall(object):
                                                                                  alpha=self.alpha)
         return senslope, senintercept, lo_slope, lo_intercept
 
-    def plot_data(self, ax=None):
+    def plot_data(self, ax=None, **kwargs):
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:
@@ -553,7 +554,7 @@ class SeasonalKendall(object):
         y = x * sslope + sintercept
         ax.plot(x, y, color='k', ls='--', label=f'sen slope fit')
 
-        ax.scatter(self.data.index, self.data[self.data_col], c=self.season_data, label=f'raw data')
+        ax.scatter(self.data.index, self.data[self.data_col], c=self.season_data, label=f'raw data', **kwargs)
 
         handles, labels = ax.get_legend_handles_labels()
         handles.append(Line2D([0], [0], color='w', ls='--'))

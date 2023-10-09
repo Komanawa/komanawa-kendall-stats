@@ -436,13 +436,14 @@ class MultiPartKendall():
         else:
             return figs, axs
 
-    def plot_data_from_breakpoints(self, breakpoints, ax=None, txt_vloc=-0.05, add_labels=True):
+    def plot_data_from_breakpoints(self, breakpoints, ax=None, txt_vloc=-0.05, add_labels=True, **kwargs):
         """
         plot the data from the breakpoints including the senslope fits
         :param breakpoints:
         :param ax: ax to plot on if None then create the ax
         :param txt_vloc: vertical location of the text (in ax.transAxes)
         :param add_labels: boolean, if True add labels (slope, pval) to the plot
+        :param kwargs: passed to ax.scatter (all parts)
         :return:
         """
         breakpoints = np.atleast_1d(breakpoints)
@@ -472,23 +473,23 @@ class MultiPartKendall():
             # plot the senslope fit and intercept
             x = self.idx_values[prev_bp:bp]
             y = x * sslope + sintercept
-            ax.plot(x, y, color='k', ls='--')
+            ax.plot(x, y, color='k', ls='--', label=f'sen slope fit part: {i}')
             prev_bp = bp
 
         if self.season_data is None:
             colors = get_colors(data)
             for i, (ds, c) in enumerate(zip(data, colors)):
                 if isinstance(self.data, pd.DataFrame):
-                    ax.scatter(ds.index, ds[self.data_col], c=c, label=f'part {i}')
+                    ax.scatter(ds.index, ds[self.data_col], c=c, label=f'part {i}', **kwargs)
                 else:
-                    ax.scatter(ds.index, ds, color=c, label=f'part {i}')
+                    ax.scatter(ds.index, ds, color=c, label=f'part {i}', **kwargs)
         else:
             seasons = np.unique(self.season_data)
             colors = get_colors(seasons)
             for i, ds in enumerate(data):
                 for s, c in zip(seasons, colors):
                     temp = ds[ds[self.season_col] == s]
-                    ax.scatter(temp.index, temp[self.data_col], color=c, label=f'season: {s}')
+                    ax.scatter(temp.index, temp[self.data_col], color=c, label=f'season: {s}', **kwargs)
 
         legend_handles = [Line2D([0], [0], color='k', ls=':'),
                           Line2D([0], [0], color='k', ls='--')]
