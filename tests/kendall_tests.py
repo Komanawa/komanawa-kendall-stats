@@ -2,6 +2,7 @@
 created matt_dumont 
 on: 15/09/23
 """
+import datetime
 import itertools
 import tempfile
 from pathlib import Path
@@ -101,6 +102,7 @@ def test_mann_kendall(show=False):
     noises = [5, 10, 50]
     unsorts = [True, False]
     na_datas = [True, False]
+
     for slope, noise, unsort, na_data in itertools.product(slopes, noises, unsorts, na_datas):
 
         x, y = make_increasing_decreasing_data(slope=slope, noise=noise)
@@ -160,11 +162,9 @@ def test_mann_kendall(show=False):
         got_data = got_data.astype(float)
         test_name = f'slope_{slope}_noise_{noise}_unsort_{unsort}_na_data_{na_data}'.replace('.', '_').replace('-', '_')
         # test plot data
-        fig, ax = mk_array.plot_data()
+        fig, ax, (handles, labels) = mk_array.plot_data()
         ax.set_title(test_name)
-        if show:
-            plt.show()
-        plt.close('all')
+
         if not make_test_data:
             test_data = pd.read_hdf(test_data_path, test_name)
             assert isinstance(test_data, pd.Series)
@@ -181,6 +181,15 @@ def test_mann_kendall(show=False):
         assert isinstance(sort_data, pd.Series)
         assert isinstance(unsort_data, pd.Series)
         pd.testing.assert_series_equal(sort_data, unsort_data, check_names=False)
+
+    # test mann kendall plot (with datetime)
+    x, y = make_increasing_decreasing_data(slope=0.1, noise=10)
+    data = pd.Series(y, index=datetime.datetime.today() + pd.to_timedelta(x * 7, unit='D'))
+    t = MannKendall(data=data, alpha=0.05, data_col=None, rm_na=True)
+    t.plot_data()
+    if show:
+        plt.show()
+    plt.close('all')
 
 
 def test_seasonal_senslope():
@@ -244,11 +253,9 @@ def test_seasonal_mann_kendall(show=True):
         got_data = got_data.astype(float)
         test_name = f'slope_{slope}_noise_{noise}_unsort_{unsort}_na_data_{na_data}'.replace('.', '_').replace('-', '_')
         # test plot data
-        fig, ax = mk_df.plot_data()
+        fig, ax, (handles, labels) = mk_df.plot_data()
         ax.set_title(test_name)
-        if show:
-            plt.show()
-        plt.close('all')
+
         if not make_test_data:
             test_data = pd.read_hdf(test_data_path, test_name)
             assert isinstance(test_data, pd.Series)
@@ -268,6 +275,16 @@ def test_seasonal_mann_kendall(show=True):
         assert isinstance(sort_data, pd.Series)
         assert isinstance(unsort_data, pd.Series)
         pd.testing.assert_series_equal(sort_data, unsort_data, check_names=False, obj=f'{sort_name} & {unsort_name}')
+
+    # test seasonal mann kendall plot (with datetime)
+    data = make_seasonal_data(slope=0.1, noise=10, unsort=False, na_data=False)
+    data.index = datetime.datetime.today() + pd.to_timedelta(data.index * 7, unit='D')
+    mk_df = SeasonalKendall(df=data, data_col='y', season_col='seasons', alpha=0.05, rm_na=True,
+                            freq_limit=0.05)
+    mk_df.plot_data()
+    if show:
+        plt.show()
+    plt.close('all')
 
 
 def plot_multipart_data_sharp(show=False):
@@ -407,6 +424,19 @@ def test_multipart_plotting(show=False):
     x, y = make_multipart_sharp_change_data(slope=multipart_sharp_slopes[0], noise=multipart_sharp_noises[1],
                                             unsort=False, na_data=False)
     data = pd.Series(y, index=x)
+    mk = MultiPartKendall(data=data, data_col=None, alpha=0.05, rm_na=True, no_trend_alpha=0.5,
+                          nparts=2, expect_part=(1, -1), min_size=10,
+                          serialise_path=None, recalc=False, initalize=True)
+
+    fig, axs = plt.subplots(nrows=2, figsize=(10, 10))
+    fig, ax = mk.plot_data_from_breakpoints(50, ax=axs[0])
+    mk.plot_data_from_breakpoints(25, ax=axs[1], txt_vloc=0.01)
+    fig.tight_layout()
+
+    x, y = make_multipart_sharp_change_data(slope=multipart_sharp_slopes[0], noise=multipart_sharp_noises[1],
+                                            unsort=False, na_data=False)
+    data = pd.Series(y, index=datetime.datetime.today() + pd.to_timedelta(x * 7, unit='D'))
+
     mk = MultiPartKendall(data=data, data_col=None, alpha=0.05, rm_na=True, no_trend_alpha=0.5,
                           nparts=2, expect_part=(1, -1), min_size=10,
                           serialise_path=None, recalc=False, initalize=True)

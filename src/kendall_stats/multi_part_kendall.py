@@ -463,16 +463,18 @@ class MultiPartKendall():
                 ax.axvline(self.idx_values[bp], color='k', ls=':')
             sslope = kendal_stats.loc[f"p{i}", "sen_slope"]
             sintercept = kendal_stats.loc[f"p{i}", "sen_intercept"]
+            x = self.idx_values[prev_bp:bp]
             if add_labels:
-                ax.text((prev_bp + bp) / 2, txt_vloc,
+                xval = pd.Series(x).mean()
+                ax.text(xval,
+                        txt_vloc,
                         f'expected: {self.trend_dict[self.expect_part[i]]}\n'
                         f'got: slope: {sslope:.3e}, '
                         f'pval:{round(kendal_stats.loc[f"p{i}", "p"], 3)}',
                         transform=trans, ha='center', va='top')
 
             # plot the senslope fit and intercept
-            x = self.idx_values[prev_bp:bp]
-            y = x * sslope + sintercept
+            y = (x).astype(float) * sslope + sintercept
             ax.plot(x, y, color='k', ls='--', label=f'sen slope fit part: {i}')
             prev_bp = bp
 
