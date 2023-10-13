@@ -9,6 +9,9 @@ a small repo that holds:
 * SeasonalMultiPartKendall: non parametric change point detection with seasonality
 
 
+.. contents:: Table of Contents
+    :depth: 3
+
 Dependencies
 =============
 
