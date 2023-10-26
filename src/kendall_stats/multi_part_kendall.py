@@ -475,7 +475,7 @@ class MultiPartKendall():
 
             # plot the senslope fit and intercept
             y = (x).astype(float) * sslope + sintercept
-            ax.plot(x, y, color='k', ls='--', label=f'sen slope fit part: {i}')
+            ax.plot(x, y, color='k', ls='--')
             prev_bp = bp
 
         if self.season_data is None:
