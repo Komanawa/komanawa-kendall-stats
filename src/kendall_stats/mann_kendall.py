@@ -430,6 +430,7 @@ class MannKendall(object):
     "assumes a pandas dataframe or series with a time index"
 
     trend_dict = {1: 'increasing', -1: 'decreasing', 0: 'no trend'}
+
     def __init__(self, data, alpha=0.05, data_col=None, rm_na=True):
         self.alpha = alpha
 
@@ -476,10 +477,10 @@ class MannKendall(object):
         ax.legend(handles, labels)
         return fig, ax, (handles, labels)
 
+    @classmethod
     @staticmethod
     def map_trend(val):
         return MannKendall.trend_dict[int(val)]
-
 
 
 class SeasonalKendall(MannKendall):
