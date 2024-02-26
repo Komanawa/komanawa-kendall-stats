@@ -71,31 +71,6 @@ def _generate_startpoints(n, min_size, nparts, check_step=1, check_window=None, 
 
 
 class MultiPartKendall():
-    """
-    multi part mann kendall test to indentify a change point(s) in a time series
-    after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
-    :ivar acceptable_matches: (boolean index) the acceptable matches for the trend, i.e. the trend is the expected trend
-    :ivar all_start_points: all the start points for the mann kendall tests
-    :ivar alpha: the alpha value used to calculate the trend
-    :ivar no_trend_alpha: significance level for no trend e.g. will accept if p> no_trend_alpha
-    :ivar data: the data used to calculate the trend
-    :ivar data_col: the column of the data used to calculate the trend
-    :ivar datasets: a dictionary of the datasets {f'p{i}':pd.DataFrame for i in range(nparts)}
-                    each dataset contains the mann kendall results for each part of the time series
-                    (trend (1=increasing, -1=decreasing, 0=no trend), h, p, z, s, var_s)
-    :ivar expect_part: the expected trend in each part of the time series (1 increasing, -1 decreasing, 0 no trend)
-    :ivar idx_values: the index values of the data used to calculate the trend used in internal plotting
-    :ivar min_size: the minimum size for all parts of the timeseries
-    :ivar n: number of data points
-    :ivar nparts: number of parts to split the time series into
-    :ivar rm_na: boolean dropna
-    :ivar s_array: the s array used to calculate the trend
-    :ivar season_col: the column of the season data used to calculate the trend (not used for this class)
-    :ivar season_data: the season data used to calculate the trend (not used for this class)
-    :ivar serialise: boolean, True if the class is serialised
-    :ivar serialise_path: path to the serialised file
-    :ivar x: the data
-    """
 
     def __init__(self, data, nparts=2, expect_part=(1, -1), min_size=10,
                  alpha=0.05, no_trend_alpha=0.5,
@@ -107,8 +82,7 @@ class MultiPartKendall():
         multi part mann kendall test to indentify a change point(s) in a time series
         after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
         note where the expected trend is zero the lack of a trend is considered significant if p > 1-alpha
-        :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index)
-                     if np.array or list expects the data to be in sample order
+        :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index) if np.array or list expects the data to be in sample order
         :param nparts: number of parts to split the time series into
         :param expect_part: expected trend in each part of the time series (1 increasing, -1 decreasing, 0 no trend)
         :param min_size: minimum size for the first and last section of the time series
@@ -117,15 +91,15 @@ class MultiPartKendall():
         :param data_col: if data is a DataFrame or Series, the column to use
         :param rm_na: remove na values from the data
         :param serialise_path: path to serialised file (as hdf), if None will not serialise
-        :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point,
-                           if 2 will check every second point
-        :param check_window None or tuple (start_idx, end_idx) (one breakpoint only)
-                                 or list of tuples of len nparts-1 with a start/end idx for each part,
-                                 or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
-                             the window to check for breakpoints.  if None will use the whole data.  this is used to
-                             significantly speed up the mann kendall test. Note that check_step still applies to the
-                             check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points
-                                (2, 4, 6))
+        :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point, if 2 will check every second point
+        :param check_window One of:
+
+            * None or tuple (start_idx, end_idx) (one breakpoint only)
+            * list of tuples of len nparts-1 with a start/end idx for each part,
+            * or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
+
+        the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test. Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6))
+
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
@@ -232,8 +206,7 @@ class MultiPartKendall():
     def print_mk_diffs(self, other):
         """
         convenience function to print the differences between two MultiPartKendall classes
-        :param other:
-        :return:
+        :param other: another MultiPartKendall class
         """
         if not isinstance(other, self.__class__):
             print('problem with class: not same class: got ', type(other))
@@ -306,6 +279,10 @@ class MultiPartKendall():
             print(traceback.format_exc())
 
     def get_acceptable_matches(self):
+        """
+        get the acceptable matches for the multipart kendall test
+        :return: pd.DataFrame
+        """
         outdata = self.datasets['p0'].loc[self.acceptable_matches]
         outdata = outdata.set_index([f'split_point_{i}' for i in range(1, self.nparts)])
         outdata.rename(columns={f'{e}': f'{e}_p0' for e in ['trend', 'h', 'p', 'z', 's', 'var_s']}, inplace=True)
@@ -329,6 +306,10 @@ class MultiPartKendall():
         return deepcopy(outdata)
 
     def get_all_matches(self):
+        """
+        get the all matches for the multipart kendall test (including those that are not significant)
+        :return: pd.DataFrame
+        """
         outdata = self.datasets['p0']
         outdata = outdata.set_index([f'split_point_{i}' for i in range(1, self.nparts)])
         outdata.rename(columns={f'{e}': f'{e}_p0' for e in ['trend', 'h', 'p', 'z', 's', 'var_s']}, inplace=True)
@@ -343,14 +324,15 @@ class MultiPartKendall():
 
     def get_maxz_breakpoints(self, raise_on_none=False):
         """
-        get the breakpoints for the maximum joint normalised (min-max for each part) z
-        the best match is the maximum znorm_joint value where:
+        get the breakpoints for the maximum joint normalised (min-max for each part) z the best match is the maximum znorm_joint value where:
+
            *  if expected trend == 1 or -1:
-           *    znorm = the min-max normalised z value for each part
+              *  znorm = the min-max normalised z value for each part
            *  else: (no trend expected)
-           *    znorm = 1 - the min-max normalised z value for each part
+              *  znorm = 1 - the min-max normalised z value for each part
            *  and
-           *    znorm_joint = the sum of the znorm values for each part
+              *  znorm_joint = the sum of the znorm values for each part
+
         :param raise_on_none: bool, if True will raise an error if no acceptable matches, otherwise will return None
         :return: array of breakpoint tuples
         """
@@ -367,10 +349,11 @@ class MultiPartKendall():
 
     def get_data_from_breakpoints(self, breakpoints):
         """
+        get the data from the breakpoints
 
         :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
         :return: outdata: list of dataframes for each part of the time series
-                 kendal_stats: dataframe of kendal stats for each part of the time series
+        :return: kendal_stats: dataframe of kendal stats for each part of the time series
         """
         breakpoints = np.atleast_1d(breakpoints)
         assert len(breakpoints) == self.nparts - 1
@@ -408,9 +391,7 @@ class MultiPartKendall():
     def plot_acceptable_matches(self, key):
         """
         quickly plot the acceptable matches
-        :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint])
-                    or 'all' a figure for each value
-                    note joint stats only have 1 value
+        :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint]) or 'all' a figure for each value note joint stats only have 1 value
         :return:
         """
         poss_keys = ['p', 'z', 's', 'var_s', 'znorm', 'znorm_joint']
@@ -444,7 +425,7 @@ class MultiPartKendall():
         :param txt_vloc: vertical location of the text (in ax.transAxes)
         :param add_labels: boolean, if True add labels (slope, pval) to the plot
         :param kwargs: passed to ax.scatter (all parts)
-        :return:
+        :return: fig, ax
         """
         breakpoints = np.atleast_1d(breakpoints)
 
@@ -850,8 +831,8 @@ class MultiPartKendall():
     def from_file(path):
         """
         load the class from a serialised file
-        :param path:
-        :return:
+        :param path: path to the serialised file
+        :return: MultiPartKendall
         """
         mpk = MultiPartKendall(
             data=None, nparts=None, expect_part=None, min_size=None, alpha=None, no_trend_alpha=None, data_col=None,
@@ -866,31 +847,6 @@ class MultiPartKendall():
 
 
 class SeasonalMultiPartKendall(MultiPartKendall):
-    """
-    multi part mann kendall test to indentify a change point(s) in a time series
-    after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
-    :ivar acceptable_matches: (boolean index) the acceptable matches for the trend, i.e. the trend is the expected trend
-    :ivar all_start_points: all the start points for the mann kendall tests
-    :ivar alpha: the alpha value used to calculate the trend
-    :ivar no_trend_alpha: significance level for no trend e.g. will accept if p> no_trend_alpha
-    :ivar data: the data used to calculate the trend
-    :ivar data_col: the column of the data used to calculate the trend
-    :ivar datasets: a dictionary of the datasets {f'p{i}':pd.DataFrame for i in range(nparts)}
-                    each dataset contains the mann kendall results for each part of the time series
-                    (trend (1=increasing, -1=decreasing, 0=no trend), h, p, z, s, var_s)
-    :ivar expect_part: the expected trend in each part of the time series (1 increasing, -1 decreasing, 0 no trend)
-    :ivar idx_values: the index values of the data used to calculate the trend used in internal plotting
-    :ivar min_size: the minimum size for all parts of the timeseries
-    :ivar n: number of data points
-    :ivar nparts: number of parts to split the time series into
-    :ivar rm_na: boolean dropna
-    :ivar s_array: the s array used to calculate the trend
-    :ivar season_col: the column of the season data used to calculate the trend
-    :ivar season_data: the season data used to calculate the trend
-    :ivar serialise: boolean, True if the class is serialised
-    :ivar serialise_path: path to the serialised file
-    :ivar x: the data
-    """
 
     def __init__(self, data, data_col, season_col, nparts=2, expect_part=(1, -1), min_size=10,
                  alpha=0.05, no_trend_alpha=0.5,
@@ -899,10 +855,8 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                  check_step=1, check_window=None,
                  recalc=False, initalize=True):
         """
-        multi part seasonal mann kendall test to indentify a change point(s) in a time series
-        after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
-        :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index)
-                     if np.array or list expects the data to be in sample order
+        multi part seasonal mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
+        :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index)if np.array or list expects the data to be in sample order
         :param data_col: if data is a DataFrame or Series, the column to use
         :param season_col: the column to use for the season
         :param nparts: number of parts to split the time series into
@@ -912,15 +866,15 @@ class SeasonalMultiPartKendall(MultiPartKendall):
         :param no_trend_alpha: significance level for no trend e.g. will accept if p> no_trend_alpha
         :param rm_na: remove na values from the data
         :param serialise_path: path to serialised file (as hdf), if None will not serialise
-        :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point,
-                           if 2 will check every second point
-        :param check_window None or tuple (start_idx, end_idx) (one breakpoint only)
-                                 or list of tuples of len nparts-1 with a start/end idx for each part,
-                                 or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
-                             the window to check for breakpoints.  if None will use the whole data.  this is used to
-                             significantly speed up the mann kendall test Note that check_step still applies to the
-                             check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points
-                                (2, 4, 6))
+        :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point, if 2 will check every second point
+        :param check_window one of:
+
+            * None or tuple (start_idx, end_idx) (one breakpoint only)
+            * or list of tuples of len nparts-1 with a start/end idx for each part,
+            * or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
+
+        the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6))
+
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
         :return:
@@ -995,7 +949,7 @@ class SeasonalMultiPartKendall(MultiPartKendall):
 
     def _calc_mann_kendall(self):
         """
-        acutually calculate the mann kendall from the sarray, this should be the only thing that needs
+        actually calculate the mann kendall from the sarray, this should be the only thing that needs
         to be updated for the seasonal kendall
         :return:
         """

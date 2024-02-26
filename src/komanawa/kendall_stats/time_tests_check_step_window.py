@@ -1,7 +1,6 @@
 """
 usage python time_tests.py [outdir]
-:param outdir: path to save the results to, if not provided then the results are saved
-               to the same directory as the script
+:param outdir: path to save the results to, if not provided then the results are saved to the same directory as the script
 
 created matt_dumont 
 on: 29/09/23
@@ -11,7 +10,7 @@ import itertools
 import pandas as pd
 
 from komanawa.kendall_stats import MultiPartKendall, SeasonalMultiPartKendall
-from komanawa.kendall_stats import make_example_data
+from komanawa.kendall_stats import example_data
 from pathlib import Path
 import timeit
 import sys
@@ -20,12 +19,9 @@ import os
 
 def timeit_test(function_names, npoints, check_step, check_window, n=10, ):
     """
-    run an automated timeit test, must be outside of the function definition, prints results in scientific notation
-    units are seconds
+    run an automated timeit test, must be outside of the function definition, prints results in scientific notation units are seconds
 
-    :param py_file_path: path to the python file that holds the functions,
-                        if the functions are in the same script as call then  __file__ is sufficient.
-                        in this case the function call should be protected by: if __name__ == '__main__':
+    :param py_file_path: path to the python file that holds the functions, if the functions are in the same script as call then  __file__ is sufficient. in this case the function call should be protected by: if __name__ == '__main__':
     :param function_names: the names of the functions to test (iterable), functions must not have arguments
     :param n: number of times to test
     :return:
