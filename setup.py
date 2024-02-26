@@ -3,7 +3,7 @@ created matt_dumont
 on: 24/03/22
 """
 import os
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, find_namespace_packages
 
 BUILD_ID = os.environ.get("BUILD_BUILDID", "0")
 
@@ -13,7 +13,7 @@ setup(
     # Author details
     author="matt Dumont",
     author_email="hansonmcoombs@gmail.com",
-    packages=find_packages("src"),
+    packages=find_namespace_packages(where='src/', include=['komanawa.kendall_stats']),
     package_dir={"": "src"},
     package_data={'komanawa/kendall_stats':['*.txt']},
     setup_requires=[],
