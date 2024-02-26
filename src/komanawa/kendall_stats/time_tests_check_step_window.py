@@ -10,7 +10,8 @@ import itertools
 
 import pandas as pd
 
-from kendall_stats import MultiPartKendall, SeasonalMultiPartKendall, make_example_data
+from komanawa.kendall_stats import MultiPartKendall, SeasonalMultiPartKendall
+from komanawa.kendall_stats import make_example_data
 from pathlib import Path
 import timeit
 import sys

@@ -8,14 +8,14 @@ from setuptools import setup, find_packages
 BUILD_ID = os.environ.get("BUILD_BUILDID", "0")
 
 setup(
-    name="kendall_stats",
-    version="v1.0.0",
+    name="komanawa-kendall-stats",
+    version="v2.0.0",
     # Author details
     author="matt Dumont",
     author_email="hansonmcoombs@gmail.com",
     packages=find_packages("src"),
     package_dir={"": "src"},
-    package_data={'kendall_stats':['*.txt']},
+    package_data={'komanawa/kendall_stats':['*.txt']},
     setup_requires=[],
     tests_require=[],
     extras_require={},

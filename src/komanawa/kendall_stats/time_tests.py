@@ -8,7 +8,8 @@ on: 29/09/23
 """
 import pandas as pd
 
-from kendall_stats import MultiPartKendall, SeasonalMultiPartKendall, SeasonalKendall, MannKendall, make_example_data
+from komanawa.kendall_stats import MultiPartKendall, SeasonalMultiPartKendall, SeasonalKendall, MannKendall
+from komanawa.kendall_stats import make_example_data
 
 from pathlib import Path
 import timeit

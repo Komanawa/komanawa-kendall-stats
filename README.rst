@@ -31,22 +31,31 @@ The following command will install a virtual environment with all the dependenci
 Install
 ========
 
+Install from pypi
+-----------------
+.. todo
+
+This is coming soon
+
+Install from github
+--------------------
+
 we manage this package as a simple github package, but it can still be installed by pip:
 
 For the latest version use:
 
 .. code-block:: bash
 
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git
 
 For a specific version use:
 
 .. code-block:: bash
 
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git@{version}
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git@{version}
 
     # example:
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git@v1.0.0
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git@v1.0.0
 
 Update
 =======
@@ -55,13 +64,13 @@ Update
 
 .. code-block:: bash
 
-    pip uninstall kendall_stats
+    pip uninstall komanawa-kendall-stats
 
 otherwise, use pip update option
 
 .. code-block:: bash
 
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/kendall_multipart_kendall.git -U
+    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git -U
 
 
 Usage
@@ -76,7 +85,7 @@ MannKendall
 
     import matplotlib.pyplot as plt
     import pandas as pd
-    from kendall_stats import MannKendall, example_data
+    from komanawa.kendall_stats import MannKendall, example_data
 
     x, y = example_data.make_increasing_decreasing_data(slope=0.1, noise=5)
 
@@ -128,7 +137,7 @@ SeasonalKendall is as per MannKendall, but with a seasonal component.
 
     import matplotlib.pyplot as plt
     import pandas as pd
-    from kendall_stats import SeasonalKendall, example_data
+    from komanawa.kendall_stats import SeasonalKendall, example_data
 
     data = example_data.make_seasonal_data(slope=0.1, noise=5, unsort=False, na_data=False)
     assert isinstance(data, pd.DataFrame)
@@ -166,7 +175,7 @@ MultiPartKendall
     from pathlib import Path
     import matplotlib.pyplot as plt
     import pandas as pd
-    from kendall_stats import MultiPartKendall, example_data
+    from komanawa.kendall_stats import MultiPartKendall, example_data
     plot_dir = Path.home().joinpath('Downloads', 'mk_plots')
     plot_dir.mkdir(exist_ok=True)
 
@@ -302,7 +311,7 @@ The SeasonalMultiPartKendall is as per the MultiPartKendall, but with a seasonal
     from pathlib import Path
     import matplotlib.pyplot as plt
     import pandas as pd
-    from kendall_stats import SeasonalMultiPartKendall, example_data
+    from komanawa.kendall_stats import SeasonalMultiPartKendall, example_data
     plot_dir = Path.home().joinpath('Downloads', 'smk_plots')
     plot_dir.mkdir(exist_ok=True)
 
@@ -390,7 +399,7 @@ The table of processing times was run on a single thread (11th Gen Intel(R) Core
 .. code-block:: python
 
     from pathlib import Path
-    from kendall_stats.time_tests import run_time_test
+    from komanawa.kendall_stats.time_tests import run_time_test
     run_time_test(outdir=Path.home().joinpath('Downloads'))
 
 Note that this may take some time
