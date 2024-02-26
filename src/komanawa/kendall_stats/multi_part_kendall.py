@@ -13,7 +13,7 @@ from pathlib import Path
 from copy import deepcopy
 from scipy.stats import mstats
 import itertools
-from komanawa.kendall_stats.mann_kendall import _mann_kendall_from_sarray, _seasonal_mann_kendall_from_sarray, \
+from mann_kendall import _mann_kendall_from_sarray, _seasonal_mann_kendall_from_sarray, \
     _calc_seasonal_senslope, get_colors, _make_s_array
 
 
