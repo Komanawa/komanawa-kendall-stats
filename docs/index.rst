@@ -12,9 +12,6 @@ a small repo that holds:
    :maxdepth: 2
    :hidden:
 
-.. contents:: Page Headings
-    :depth: 3
-
 Dependencies
 =============
 

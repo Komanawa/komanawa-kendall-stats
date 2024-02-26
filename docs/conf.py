@@ -19,14 +19,14 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc',
 extensions.append('autoapi.extension')
 
 # Auto API settings
+autoapi_implicit_namespaces = True  # Allow for implicit namespaces
 autoapi_keep_files = True  # Keep the generated files (for debugging)
 autoapi_ignore = []  # Ignore these files
 autoapi_python_class_content = 'both'  # Include both the class docstring and the __init__ docstring
-autoapi_dirs = ['../src/komanawa/kendall_stats']  # The directory to process
+autoapi_dirs = ['../src']  # The directory to process
 autoapi_options = ['members', 'inherited-members', 'show-inheritance', 'show-module-summary', 'imported-members',
                    'show-inheritance-diagram']
 
-autoapi_python_use_implicit_namespaces = True  # Use implicit namespaces
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
