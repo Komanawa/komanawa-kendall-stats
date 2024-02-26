@@ -32,7 +32,6 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # todo autoapi isn't generating the module overview
-# todo the two tables of contents are not great. I want to have a global TOC and a local TOC
 
 # -- options for autodoc -----------------------------------------------------
 add_module_names = False  # Don't add the module name to the class/function name

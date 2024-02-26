@@ -1,10 +1,4 @@
-
-.. toctree::
-   :maxdepth: 3
-   :caption: Contents:
-
-
-Mann Kendall and Multipart Mann Kendall
+Komanawa Kendall Stats
 #########################################
 
 a small repo that holds:
@@ -14,8 +8,11 @@ a small repo that holds:
 * MultiPartKendall: non parametric change point detection
 * SeasonalMultiPartKendall: non parametric change point detection with seasonality
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
 
-.. contents:: Table of Contents
+.. contents:: Page Headings
     :depth: 3
 
 Dependencies
