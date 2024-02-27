@@ -79,9 +79,8 @@ class MultiPartKendall():
                  check_step=1, check_window=None,
                  recalc=False, initalize=True):
         """
-        multi part mann kendall test to indentify a change point(s) in a time series
-        after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
-        note where the expected trend is zero the lack of a trend is considered significant if p > 1-alpha
+        multi part mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0 note where the expected trend is zero the lack of a trend is considered significant if p > 1-alpha
+
         :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index) if np.array or list expects the data to be in sample order
         :param nparts: number of parts to split the time series into
         :param expect_part: expected trend in each part of the time series (1 increasing, -1 decreasing, 0 no trend)
@@ -92,13 +91,11 @@ class MultiPartKendall():
         :param rm_na: remove na values from the data
         :param serialise_path: path to serialised file (as hdf), if None will not serialise
         :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point, if 2 will check every second point
-        :param check_window One of:
+        :param check_window: the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test. Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6)) One of:
 
             * None or tuple (start_idx, end_idx) (one breakpoint only)
             * list of tuples of len nparts-1 with a start/end idx for each part,
             * or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
-
-        the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test. Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6))
 
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
@@ -352,6 +349,7 @@ class MultiPartKendall():
         get the data from the breakpoints
 
         :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
+
         :return: outdata: list of dataframes for each part of the time series
         :return: kendal_stats: dataframe of kendal stats for each part of the time series
         """
@@ -391,6 +389,7 @@ class MultiPartKendall():
     def plot_acceptable_matches(self, key):
         """
         quickly plot the acceptable matches
+
         :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint]) or 'all' a figure for each value note joint stats only have 1 value
         :return:
         """
@@ -420,6 +419,7 @@ class MultiPartKendall():
     def plot_data_from_breakpoints(self, breakpoints, ax=None, txt_vloc=-0.05, add_labels=True, **kwargs):
         """
         plot the data from the breakpoints including the senslope fits
+
         :param breakpoints:
         :param ax: ax to plot on if None then create the ax
         :param txt_vloc: vertical location of the text (in ax.transAxes)
@@ -489,6 +489,7 @@ class MultiPartKendall():
                        check_step, check_window, season_col=None, check_inputs=True):
         """
         setup the class data from a serialised file, values are passed to ensure they are consistent
+
         :param check_inputs: bool, if True will check the inputs match the serialised file
         """
         assert self.serialise_path is not None, 'serialise path not set, should not get here'
@@ -612,6 +613,7 @@ class MultiPartKendall():
                        check_step, check_window, season_col=None):
         """
         set up the class data from the input data
+
         :param data:
         :param nparts:
         :param expect_part:
@@ -732,8 +734,8 @@ class MultiPartKendall():
 
     def _calc_mann_kendall(self):
         """
-        acutually calculate the mann kendall from the sarray, this should be the only thing that needs
-        to be updated for the seasonal kendall
+        acutually calculate the mann kendall from the sarray, this should be the only thing that needs to be updated for the seasonal kendall
+
         :return:
         """
         temp_data = {}
@@ -831,6 +833,7 @@ class MultiPartKendall():
     def from_file(path):
         """
         load the class from a serialised file
+
         :param path: path to the serialised file
         :return: MultiPartKendall
         """
@@ -856,6 +859,7 @@ class SeasonalMultiPartKendall(MultiPartKendall):
                  recalc=False, initalize=True):
         """
         multi part seasonal mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
+
         :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index)if np.array or list expects the data to be in sample order
         :param data_col: if data is a DataFrame or Series, the column to use
         :param season_col: the column to use for the season
@@ -867,13 +871,11 @@ class SeasonalMultiPartKendall(MultiPartKendall):
         :param rm_na: remove na values from the data
         :param serialise_path: path to serialised file (as hdf), if None will not serialise
         :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point, if 2 will check every second point
-        :param check_window one of:
+        :param check_window: the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6))  one of:
 
-            * None or tuple (start_idx, end_idx) (one breakpoint only)
-            * or list of tuples of len nparts-1 with a start/end idx for each part,
-            * or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
-
-        the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6))
+               * None or tuple (start_idx, end_idx) (one breakpoint only)
+               * or list of tuples of len nparts-1 with a start/end idx for each part,
+               * or a 2d array shape (nparts-1, 2) with a start/end idx for each part
 
         :param recalc: if True will recalculate the mann kendall even if the serialised file exists
         :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
@@ -931,6 +933,7 @@ class SeasonalMultiPartKendall(MultiPartKendall):
     def from_file(path):
         """
         load the class from a serialised file
+
         :param path:
         :return:
         """

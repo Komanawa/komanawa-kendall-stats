@@ -14,6 +14,7 @@ from matplotlib.lines import Line2D
 def _make_s_array(x):
     """
     make the s array for the mann kendall test
+
     :param x:
     :return:
     """
@@ -29,8 +30,8 @@ def _make_s_array(x):
 def _seasonal_mann_kendall_from_sarray(x, season_data, alpha=0.05, sarray=None,
                                        freq_limit=0.05):
     """
-    calculate the seasonal mann kendall test for a time series
-    after: https://doi.org/10.1029/WR020i006p00727
+    calculate the seasonal mann kendall test for a time series after: https://doi.org/10.1029/WR020i006p00727
+
     :param x: the data
     :param season_data: the season data, will be converted to integers
     :param alpha: significance level
@@ -99,6 +100,7 @@ def _seasonal_mann_kendall_from_sarray(x, season_data, alpha=0.05, sarray=None,
 def _mann_kendall_from_sarray(x, alpha=0.05, sarray=None):
     """
     code optimised mann kendall
+
     :param x:
     :param alpha:
     :param sarray:
@@ -415,6 +417,7 @@ def _find_repeats(arr):
 class MannKendall(object):
     """
     an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index
+
     :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
     :param h: boolean, True if the trend is significant
     :param p: the p value of the trend
@@ -445,6 +448,7 @@ class MannKendall(object):
     def calc_senslope(self):
         """
         calculate the senslope of the data
+
         :return: senslope, senintercept, lo_slope, up_slope
         """
         senslope, senintercept, lo_slope, up_slope = mstats.theilslopes(self.data, self.data.index, alpha=self.alpha)
@@ -453,6 +457,7 @@ class MannKendall(object):
     def plot_data(self, ax=None, **kwargs):
         """
         plot the data and the senslope fit
+
         :param ax: optional matplotlib axis to plot the data on
         :param kwargs: kwargs to pass to plt.scatter for the raw data
         :return:
@@ -489,6 +494,7 @@ class MannKendall(object):
     def map_trend(val):
         """
         map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
+
         :param val: trend value
         :return:
         """
@@ -553,6 +559,7 @@ class SeasonalKendall(MannKendall):
     def plot_data(self, ax=None, **kwargs):
         """
         plot the data and the senslope fit
+
         :param ax: optional matplotlib axis to plot the data on
         :param kwargs: kwargs to pass to plt.scatter for the raw data (note that the seasonal column is passed to scatter as c)
         :return:

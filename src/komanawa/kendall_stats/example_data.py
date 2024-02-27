@@ -10,6 +10,7 @@ from copy import deepcopy
 def make_increasing_decreasing_data(slope=1, noise=1, step=1):
     """
     make increasing and decreasing test data
+
     :param slope: slope for line
     :param noise: random noise to add to data
     :param step: spacing of data
@@ -26,6 +27,7 @@ def make_increasing_decreasing_data(slope=1, noise=1, step=1):
 def make_seasonal_data(slope, noise, unsort, na_data, step=1):
     """
     make seasonal test data
+
     :param slope: slope for line
     :param noise: noise to add to data
     :param unsort: make the data unsorted (for testing purposes)
@@ -63,6 +65,7 @@ def make_seasonal_data(slope, noise, unsort, na_data, step=1):
 def make_multipart_sharp_change_data(slope, noise, unsort, na_data, step=1):
     """
     sharp v change positive slope is increasing and then decreasing, negative is opposite
+
     :param slope: slope for line
     :param noise: noise to add to data
     :param unsort: make the data unsorted (for testing purposes)
@@ -95,8 +98,8 @@ def make_multipart_sharp_change_data(slope, noise, unsort, na_data, step=1):
 
 def make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1):
     """
-    note the slope is multiplied by -1 to retain the same standards make_sharp_change_data
-    positive slope is increasing and then decreasing, negative is opposite
+    note the slope is multiplied by -1 to retain the same standards make_sharp_change_data positive slope is increasing and then decreasing, negative is opposite
+
     :param slope: slope for line
     :param noise: noise to add to data
     :param unsort: make the data unsorted (for testing purposes)
@@ -128,6 +131,7 @@ def make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1):
 def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data, step=1):
     """
     make seasonal test data
+
     :param slope: slope for parabola note the slope is multiplied by -1 to retain the same standards make_sharp_change_data
     :param noise: noise to add to data
     :param unsort: make the data unsorted (for testing purposes)
@@ -165,6 +169,7 @@ def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data, step=1):
 def make_seasonal_multipart_sharp_change(slope, noise, unsort, na_data, step=1):
     """
     make seasonal test data
+
     :param slope: slope for line
     :param noise: noise to add to data
     :param unsort: make the data unsorted (for testing purposes)

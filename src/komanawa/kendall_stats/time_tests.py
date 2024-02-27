@@ -126,6 +126,7 @@ def run_time_test(outdir=None, all_npoints=['50', '100', '500', '1000'],
                   ):
     """
     run the time test for all functions and save the results to a csv file
+
     :param outdir: place to save the output
     :param all_npoints: the dataset sizes to test
     :param function_names: the names of the functions to test, default is all

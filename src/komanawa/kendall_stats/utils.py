@@ -12,6 +12,7 @@ from pathlib import Path
 def estimate_runtime(npoints, func, plot=False):
     """
     assumes linear log-log relationship between runtime and number of points
+
     :param npoints:
     :param func:
     :param plot: if True then plot the data and the regression line

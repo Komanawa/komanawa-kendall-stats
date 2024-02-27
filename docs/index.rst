@@ -9,8 +9,10 @@ a small repo that holds:
 * SeasonalMultiPartKendall: non parametric change point detection with seasonality
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
+    :maxdepth: 2
+    :hidden:
+
+    autoapi/komanawa/kendall_stats/index.rst
 
 Dependencies
 =============
