@@ -37,10 +37,52 @@ toc_object_entries_show_parents = 'hide'  # Hide the parent class in the TOC
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+# import sphinx_pdj_theme
+# html_theme = 'sphinx_pdj_theme'
+# html_theme_path = [sphinx_pdj_theme.get_html_theme_path()]
+# html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
 
-html_theme = 'alabaster'
 html_static_path = ['_static']
 html_sidebars = {'**': [
-    'globaltoc.html', # add global api
-    'localtoc.html',
-    'searchbox.html']}
+    # 'globaltoc.html', # add global api
+    # 'localtoc.html',
+    # 'searchbox.html'
+]}
+html_theme_options = {
+    "use_edit_page_button": False,
+    "navbar_end": ["navbar-icon-links"],
+    "logo": {
+        "image_light": "_static/ksl_for_latex.png",
+        "text": "Kendall Stats Overview",
+    },
+    "show_toc_level": 2,
+    "secondary_sidebar_items": ["page-toc", ],
+    "navbar_align": "left",
+    "icon_links": [
+        {
+            "name": "View on GitHub",
+            "url": "https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+
+        {
+            'name': 'Follow us on LinkedIn',
+            'url': 'https://www.linkedin.com/company/k%C5%8Dmanawa-solutions-ltd/',
+            'icon': "fa-brands fa-linkedin",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Komanawa Solutions Ltd.",
+            "url": "https:www.komanawa.com",
+            "icon": "_static/just_symbol.png",
+            "type": "local",
+        },
+
+    ],
+}
+html_show_sourcelink = False
+html_context = {
+    "default_mode": 'light'
+}

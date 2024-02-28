@@ -12,7 +12,7 @@ a small repo that holds:
     :maxdepth: 2
     :hidden:
 
-    autoapi/komanawa/kendall_stats/index.rst
+    Code documentation<autoapi/komanawa/kendall_stats/index.rst>
 
 Dependencies
 =============
