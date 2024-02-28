@@ -13,7 +13,7 @@ setup(
     # Author details
     author="matt Dumont",
     author_email="hansonmcoombs@gmail.com",
-    packages=find_namespace_packages(where='src/', include=['komanawa.kendall_stats']),
+    packages=find_namespace_packages(where='src/'),
     package_dir={"": "src"},
     package_data={'komanawa/kendall_stats':['*.txt']},
     setup_requires=[],
