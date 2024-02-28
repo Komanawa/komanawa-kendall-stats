@@ -75,7 +75,7 @@ html_theme_options = {
         },
         {
             "name": "Komanawa Solutions Ltd.",
-            "url": "https:www.komanawa.com",
+            "url": "https://www.komanawa.com",
             "icon": "_static/just_symbol.png",
             "type": "local",
         },
