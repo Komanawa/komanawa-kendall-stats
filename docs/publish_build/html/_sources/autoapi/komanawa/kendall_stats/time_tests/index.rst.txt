@@ -1,0 +1,50 @@
+:py:mod:`komanawa.kendall_stats.time_tests`
+===========================================
+
+.. py:module:: komanawa.kendall_stats.time_tests
+
+.. autoapi-nested-parse::
+
+   usage python time_tests.py [outdir]
+   :param outdir: path to save the results to, if not provided then the results are saved to the same directory as the script
+
+   created matt_dumont 
+   on: 29/09/23
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   komanawa.kendall_stats.time_tests.timeit_test
+   komanawa.kendall_stats.time_tests.run_time_test
+
+
+
+.. py:function:: timeit_test(function_names, npoints, n=10)
+
+   run an automated timeit test, must be outside of the function definition, prints results in scientific notation
+   units are seconds
+
+   :param py_file_path: path to the python file that holds the functions, if the functions are in the same script as call then  __file__ is sufficient. in this case the function call should be protected by: if __name__ == '__main__':
+   :param function_names: the names of the functions to test (iterable), functions must not have arguments
+   :param n: number of times to test
+   :return: dictionary of function names and their times
+
+
+.. py:function:: run_time_test(outdir=None, all_npoints=['50', '100', '500', '1000'], function_names=['MannKendall_time_test', 'SeasonalKendall_time_test', 'MultiPartKendall_2part_time_test', 'SeasonalMultiPartKendall_2part_time_test', 'MultiPartKendall_3part_time_test', 'SeasonalMultiPartKendall_3part_time_test'])
+
+   run the time test for all functions and save the results to a csv file
+
+   :param outdir: place to save the output
+   :param all_npoints: the dataset sizes to test
+   :param function_names: the names of the functions to test, default is all
+   :return:
+
+
