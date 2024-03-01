@@ -1,3 +1,39 @@
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src/"]
+include = ["komanawa.kendall_stats"]
+
+[tool.setuptools.package-data]
+mypkg = ["*.txt"]
+
+[project]
+name = "komanawa-kendall-stats"
+version = "v2.0.0"
+authors = [
+    { name = "Matt Dumont", email = "Matt@komanawa.com" },
+]
+description = "A package to calculate Mann Kendall statistics and implment Mulipart Mann Kendall tests"
+readme = "README.rst"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.0.3",
+    "numpy>=1.25.2",
+    "matplotlib>=3.7.2",
+    "scipy>=1.11.2",
+    "tables>=3.8.0",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats"
+Issues = "https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats/issues"
+Documentation = "https://komanawa-solutions-ltd.github.io/komanawa-kendall-stats/"
