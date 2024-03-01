@@ -7,7 +7,7 @@ where = ["src/"]
 include = ["komanawa.kendall_stats"]
 
 [tool.setuptools.package-data]
-mypkg = ["*.txt"]
+komanawa.kendall_stats = ["*.txt"]
 
 [project]
 name = "komanawa-kendall-stats"
