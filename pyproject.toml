@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src/"]
-include = ["komanawa.kendall_stats"]
 
 
 [tool.setuptools.package-data]
