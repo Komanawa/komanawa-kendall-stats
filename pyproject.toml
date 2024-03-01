@@ -7,7 +7,7 @@ where = ["src/"]
 
 
 [tool.setuptools.package-data]
-komanawa = ["*.txt"]
+komanawa-kendall-stats = ["*.txt"]
 
 [project]
 name = "komanawa-kendall-stats"
