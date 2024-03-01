@@ -36,9 +36,9 @@ Install
 Install from pypi
 -----------------
 
-.. todo
+.. code-block:: bash
 
-This is coming soon
+    pip install komanawa-kendall-stats
 
 Install from github
 --------------------
