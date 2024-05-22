@@ -7,7 +7,11 @@ import pandas as pd
 from scipy.stats import norm, mstats
 import warnings
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
+
+try:
+    from matplotlib.cm import get_cmap
+except ImportError:
+    from matplotlib.pyplot import get_cmap
 from matplotlib.lines import Line2D
 
 
