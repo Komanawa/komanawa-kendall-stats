@@ -8,6 +8,14 @@ from copy import deepcopy
 
 
 def make_increasing_decreasing_data(slope=1, noise=1, step=1):
+    """
+    make increasing and decreasing test data
+
+    :param slope: slope for line
+    :param noise: random noise to add to data
+    :param step: spacing of data
+    :return: x,y (np.arrays)
+    """
     x = np.arange(0, 100, step).astype(float)
     y = x * slope
     np.random.seed(68)
@@ -17,6 +25,16 @@ def make_increasing_decreasing_data(slope=1, noise=1, step=1):
 
 
 def make_seasonal_data(slope, noise, unsort, na_data, step=1):
+    """
+    make seasonal test data
+
+    :param slope: slope for line
+    :param noise: noise to add to data
+    :param unsort: make the data unsorted (for testing purposes)
+    :param na_data: add some na data to the data (for testing purposes)
+    :param step: spacing of data
+    :return: pd.DataFrame
+    """
     x, y = make_increasing_decreasing_data(slope=slope, noise=noise, step=step)
     # add/reduce data in each season (create bias + +- noise)
     seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4+1, axis=0).flatten()
@@ -47,11 +65,12 @@ def make_seasonal_data(slope, noise, unsort, na_data, step=1):
 def make_multipart_sharp_change_data(slope, noise, unsort, na_data, step=1):
     """
     sharp v change positive slope is increasing and then decreasing, negative is opposite
-    :param slope:
-    :param noise:
-    :param unsort:
-    :param na_data:
-    :return:
+
+    :param slope: slope for line
+    :param noise: noise to add to data
+    :param unsort: make the data unsorted (for testing purposes)
+    :param na_data: add some na data to the data (for testing purposes)
+    :return: x,y (np.arrays)
     """
     x = np.arange(0, 100, step).astype(float)
     y = np.zeros_like(x).astype(float)
@@ -79,13 +98,13 @@ def make_multipart_sharp_change_data(slope, noise, unsort, na_data, step=1):
 
 def make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1):
     """
-    note the slope is multiplied by -1 to retain the same standards make_sharp_change_data
-    positive slope is increasing and then decreasing, negative is opposite
-    :param slope:
-    :param noise:
-    :param unsort:
-    :param na_data:
-    :return:
+    note the slope is multiplied by -1 to retain the same standards make_sharp_change_data positive slope is increasing and then decreasing, negative is opposite
+
+    :param slope: slope for line
+    :param noise: noise to add to data
+    :param unsort: make the data unsorted (for testing purposes)
+    :param na_data: add some na data to the data (for testing purposes)
+    :return: x,y (np.arrays)
     """
 
     x = np.arange(0, 100, step).astype(float)
@@ -110,6 +129,16 @@ def make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1):
 
 
 def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data, step=1):
+    """
+    make seasonal test data
+
+    :param slope: slope for parabola note the slope is multiplied by -1 to retain the same standards make_sharp_change_data
+    :param noise: noise to add to data
+    :param unsort: make the data unsorted (for testing purposes)
+    :param na_data: add some na data to the data (for testing purposes)
+    :param step: spacing of data
+    :return: pd.DataFrame
+    """
     x, y = make_multipart_parabolic_data(slope=slope, noise=noise, unsort=False, na_data=False, step=step)
     # add/reduce data in each season (create bias + +- noise)
     seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4 +1, axis=0).flatten()
@@ -138,6 +167,16 @@ def make_seasonal_multipart_parabolic(slope, noise, unsort, na_data, step=1):
 
 
 def make_seasonal_multipart_sharp_change(slope, noise, unsort, na_data, step=1):
+    """
+    make seasonal test data
+
+    :param slope: slope for line
+    :param noise: noise to add to data
+    :param unsort: make the data unsorted (for testing purposes)
+    :param na_data: add some na data to the data (for testing purposes)
+    :param step: spacing of data
+    :return: pd.DataFrame
+    """
     x, y = make_multipart_sharp_change_data(slope=slope, noise=noise, unsort=False, na_data=False, step=step)
     # add/reduce data in each season (create bias + +- noise)
     seasons = np.repeat(np.array([[1, 2, 3, 4]]), len(x) // 4 + 1, axis=0).flatten()

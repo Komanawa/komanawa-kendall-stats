@@ -1,0 +1,4 @@
+<map id="inheritance1bdf1af4b8" name="inheritance1bdf1af4b8">
+<area shape="rect" id="node1" href="#komanawa.kendall_stats.mann_kendall.MannKendall" target="_top" title="an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index" alt="" coords="5,5,112,31"/>
+<area shape="rect" id="node2" href="#komanawa.kendall_stats.mann_kendall.SeasonalKendall" target="_top" title="an object to hold and calculate seasonal kendall trends" alt="" coords="160,5,289,31"/>
+</map>

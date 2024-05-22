@@ -18,6 +18,7 @@ from matplotlib.lines import Line2D
 def _make_s_array(x):
     """
     make the s array for the mann kendall test
+
     :param x:
     :return:
     """
@@ -33,14 +34,13 @@ def _make_s_array(x):
 def _seasonal_mann_kendall_from_sarray(x, season_data, alpha=0.05, sarray=None,
                                        freq_limit=0.05):
     """
-    calculate the seasonal mann kendall test for a time series
-    after: https://doi.org/10.1029/WR020i006p00727
+    calculate the seasonal mann kendall test for a time series after: https://doi.org/10.1029/WR020i006p00727
+
     :param x: the data
     :param season_data: the season data, will be converted to integers
     :param alpha: significance level
     :param sarray: the s array, if None will be calculated from _make_s_array
-    :param freq_limit: the maximum difference in frequency between seasons (as a fraction),
-                       if greater than this will raise a warning
+    :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning
     :return:
     """
     # calculate the unique data
@@ -104,6 +104,7 @@ def _seasonal_mann_kendall_from_sarray(x, season_data, alpha=0.05, sarray=None,
 def _mann_kendall_from_sarray(x, alpha=0.05, sarray=None):
     """
     code optimised mann kendall
+
     :param x:
     :param alpha:
     :param sarray:
@@ -419,19 +420,18 @@ def _find_repeats(arr):
 
 class MannKendall(object):
     """
-    an object to hold and calculate kendall trends
+    an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index
 
-    :ivar trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
-    :ivar h: boolean, True if the trend is significant
-    :ivar p: the p value of the trend
-    :ivar z: the z value of the trend
-    :ivar s: the s value of the trend
-    :ivar var_s: the variance of the s value
-    :ivar alpha: the alpha value used to calculate the trend
-    :ivar data: the data used to calculate the trend
-    :ivar data_col: the column of the data used to calculate the trend
+    :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
+    :param h: boolean, True if the trend is significant
+    :param p: the p value of the trend
+    :param z: the z value of the trend
+    :param s: the s value of the trend
+    :param var_s: the variance of the s value
+    :param alpha: the alpha value used to calculate the trend
+    :param data: the data used to calculate the trend
+    :param data_col: the column of the data used to calculate the trend
     """
-    "assumes a pandas dataframe or series with a time index"
 
     trend_dict = {1: 'increasing', -1: 'decreasing', 0: 'no trend'}
 
@@ -450,10 +450,22 @@ class MannKendall(object):
         self.trend, self.h, self.p, self.z, self.s, self.var_s = _mann_kendall_from_sarray(test_data, alpha=alpha)
 
     def calc_senslope(self):
+        """
+        calculate the senslope of the data
+
+        :return: senslope, senintercept, lo_slope, up_slope
+        """
         senslope, senintercept, lo_slope, up_slope = mstats.theilslopes(self.data, self.data.index, alpha=self.alpha)
         return senslope, senintercept, lo_slope, up_slope
 
     def plot_data(self, ax=None, **kwargs):
+        """
+        plot the data and the senslope fit
+
+        :param ax: optional matplotlib axis to plot the data on
+        :param kwargs: kwargs to pass to plt.scatter for the raw data
+        :return:
+        """
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:
@@ -484,6 +496,12 @@ class MannKendall(object):
     @classmethod
     @staticmethod
     def map_trend(val):
+        """
+        map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
+
+        :param val: trend value
+        :return:
+        """
         return MannKendall.trend_dict[int(val)]
 
 
@@ -491,35 +509,21 @@ class SeasonalKendall(MannKendall):
     """
     an object to hold and calculate seasonal kendall trends
 
-    :ivar trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
-    :ivar h: boolean, True if the trend is significant
-    :ivar p: the p value of the trend
-    :ivar z: the z value of the trend
-    :ivar s: the s value of the trend
-    :ivar var_s: the variance of the s value
-    :ivar alpha: the alpha value used to calculate the trend
-    :ivar data: the data used to calculate the trend
-    :ivar data_col: the column of the data used to calculate the trend
-    :ivar season_col: the column of the season data used to calculate the trend
-    :ivar freq_limit: the maximum difference in frequency between seasons (as a fraction),
-                        if greater than this will raise a warning
+    :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
+    :param h: boolean, True if the trend is significant
+    :param p: the p value of the trend
+    :param z: the z value of the trend
+    :param s: the s value of the trend
+    :param var_s: the variance of the s value
+    :param alpha: the alpha value used to calculate the trend
+    :param data: the data used to calculate the trend
+    :param data_col: the column of the data used to calculate the trend
+    :param season_col: the column of the season data used to calculate the trend
+    :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning
     """
 
     def __init__(self, df, data_col, season_col, alpha=0.05, rm_na=True,
                  freq_limit=0.05):
-        """
-        intis and calculate the seasonal mann kendall
-        outputs are held by
-
-        :param df: pd.DataFrame holding the season and data columns, expect the index to be the time index
-                    e.g. sort_index will sort the data by time
-        :param data_col: name of the data column
-        :param season_col: name of the season column
-        :param alpha: the alpha limit for the p value
-        :param rm_na: boolean dropna
-        :param freq_limit: the maximum difference in frequency between seasons (as a fraction),
-                       if greater than this will raise a warning
-        """
         self.trend_dict = {1: 'increasing', -1: 'decreasing', 0: 'no trend'}
         assert isinstance(df, pd.DataFrame), 'df must be a pandas DataFrame'
 
@@ -547,12 +551,23 @@ class SeasonalKendall(MannKendall):
         # -1 decreasing, 0 no trend, 1 increasing
 
     def calc_senslope(self):
+        """
+        calculate the senslope of the data
+        :return: senslope, senintercept, lo_slope, lo_intercept
+        """
         senslope, senintercept, lo_slope, lo_intercept = _calc_seasonal_senslope(self.data[self.data_col],
                                                                                  self.season_data, x=self.data.index,
                                                                                  alpha=self.alpha)
         return senslope, senintercept, lo_slope, lo_intercept
 
     def plot_data(self, ax=None, **kwargs):
+        """
+        plot the data and the senslope fit
+
+        :param ax: optional matplotlib axis to plot the data on
+        :param kwargs: kwargs to pass to plt.scatter for the raw data (note that the seasonal column is passed to scatter as c)
+        :return:
+        """
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:

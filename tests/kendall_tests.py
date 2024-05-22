@@ -15,7 +15,7 @@ from komanawa.kendall_stats.multi_part_kendall import MultiPartKendall, Seasonal
 from komanawa.kendall_stats.mann_kendall import _mann_kendall_from_sarray, _make_s_array, _mann_kendall_old, \
     _seasonal_mann_kendall_from_sarray, _old_smk, MannKendall, SeasonalKendall, \
     _calc_seasonal_senslope, get_colors
-from komanawa.kendall_stats.make_example_data import make_increasing_decreasing_data, make_seasonal_data, \
+from komanawa.kendall_stats.example_data import make_increasing_decreasing_data, make_seasonal_data, \
     make_multipart_sharp_change_data, multipart_sharp_slopes, multipart_sharp_noises, \
     make_multipart_parabolic_data, multipart_parabolic_slopes, multipart_parabolic_noises, \
     make_seasonal_multipart_parabolic, make_seasonal_multipart_sharp_change

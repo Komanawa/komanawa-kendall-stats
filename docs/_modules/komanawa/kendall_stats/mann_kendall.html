@@ -1,0 +1,1049 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>komanawa.kendall_stats.mann_kendall &#8212; komanawa-kendall-stats v2.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=aa039f9c"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/komanawa/kendall_stats/mann_kendall';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../_static/ksl_for_latex.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">Kendall Stats Overview</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../autoapi/komanawa/kendall_stats/index.html">
+                        Code documentation
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats" title="View on GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">View on GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.linkedin.com/company/k%C5%8Dmanawa-solutions-ltd/" title="Follow us on LinkedIn" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-linkedin fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Follow us on LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.komanawa.com" title="Komanawa Solutions Ltd." class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../../_static/just_symbol.png" class="icon-link-image" alt="Komanawa Solutions Ltd."/></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../autoapi/komanawa/kendall_stats/index.html">
+                        Code documentation
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats" title="View on GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">View on GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.linkedin.com/company/k%C5%8Dmanawa-solutions-ltd/" title="Follow us on LinkedIn" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-linkedin fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">Follow us on LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.komanawa.com" title="Komanawa Solutions Ltd." class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="../../../_static/just_symbol.png" class="icon-link-image" alt="Komanawa Solutions Ltd."/></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">komanawa.ken...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for komanawa.kendall_stats.mann_kendall</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">created matt_dumont</span>
+<span class="sd">on: 14/09/23</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">mstats</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.cm</span> <span class="kn">import</span> <span class="n">get_cmap</span>
+<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+
+
+<span class="k">def</span> <span class="nf">_make_s_array</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    make the s array for the mann kendall test</span>
+
+<span class="sd">    :param x:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">k_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">j_array</span> <span class="o">=</span> <span class="n">k_array</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="n">s_stat_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">k_array</span> <span class="o">-</span> <span class="n">j_array</span><span class="p">)</span>
+    <span class="n">s_stat_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">s_stat_array</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># remove the diagonal and upper triangle</span>
+    <span class="k">return</span> <span class="n">s_stat_array</span>
+
+
+<span class="k">def</span> <span class="nf">_seasonal_mann_kendall_from_sarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">season_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">sarray</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">freq_limit</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate the seasonal mann kendall test for a time series after: https://doi.org/10.1029/WR020i006p00727</span>
+
+<span class="sd">    :param x: the data</span>
+<span class="sd">    :param season_data: the season data, will be converted to integers</span>
+<span class="sd">    :param alpha: significance level</span>
+<span class="sd">    :param sarray: the s array, if None will be calculated from _make_s_array</span>
+<span class="sd">    :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># calculate the unique data</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">season_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">season_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">season_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">season_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">),</span> <span class="p">(</span>
+        <span class="s1">&#39;season data must be a string, or integer to avoid errors associated with float precision&#39;</span>
+    <span class="p">)</span>
+    <span class="c1"># get unique values convert to integers</span>
+    <span class="n">unique_seasons</span><span class="p">,</span> <span class="n">season_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">season_data</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># get unique integer values</span>
+    <span class="n">unique_season_ints</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">season_data</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">relaive_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">counts</span> <span class="o">-</span> <span class="n">counts</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">counts</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">relaive_freq</span> <span class="o">&gt;</span> <span class="n">freq_limit</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;the discrepancy of frequency of seasons is greater than the limit(</span><span class="si">{</span><span class="n">freq_limit</span><span class="si">}</span><span class="s1">)&#39;</span>
+                      <span class="sa">f</span><span class="s1">&#39; this may affect the test&#39;</span>
+                      <span class="sa">f</span><span class="s1">&#39; the frequency of seasons are </span><span class="si">{</span><span class="n">counts</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">season_data</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;season data and x must be the same shape&#39;</span>
+    <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;need at least 3 data points&#39;</span>
+
+    <span class="c1"># calculate s</span>
+    <span class="k">if</span> <span class="n">sarray</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sarray</span> <span class="o">=</span> <span class="n">_make_s_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">sarray</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># make the season array</span>
+    <span class="n">season_k_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">season_data</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">season_j_array</span> <span class="o">=</span> <span class="n">season_k_array</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">var_s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># run the mann kendall for each season</span>
+    <span class="k">for</span> <span class="n">season</span> <span class="ow">in</span> <span class="n">unique_season_ints</span><span class="p">:</span>
+        <span class="n">season_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">season_k_array</span> <span class="o">==</span> <span class="n">season</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">season_j_array</span> <span class="o">==</span> <span class="n">season</span><span class="p">)</span>
+        <span class="n">temp_s</span> <span class="o">=</span> <span class="n">sarray</span><span class="p">[</span><span class="n">season_idx</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">temp_x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">season_data</span> <span class="o">==</span> <span class="n">season</span><span class="p">]</span>
+        <span class="n">n0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp_x</span><span class="p">)</span>
+
+        <span class="c1"># calculate the var(s)</span>
+        <span class="n">unique_x</span><span class="p">,</span> <span class="n">unique_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">temp_x</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">unique_mod</span> <span class="o">=</span> <span class="p">(</span><span class="n">unique_counts</span> <span class="o">*</span> <span class="p">(</span><span class="n">unique_counts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">unique_counts</span> <span class="o">+</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">unique_counts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">temp_var_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">n0</span> <span class="o">*</span> <span class="p">(</span><span class="n">n0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n0</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">unique_mod</span><span class="p">)</span> <span class="o">/</span> <span class="mi">18</span>
+
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">temp_s</span>
+        <span class="n">var_s</span> <span class="o">+=</span> <span class="n">temp_var_s</span>
+
+    <span class="c1"># calculate the z value</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_s</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>  <span class="c1"># two tail test</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span>
+    <span class="c1"># -1 decreasing, 0 no trend, 1 increasing</span>
+    <span class="k">return</span> <span class="n">trend</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">var_s</span>
+
+
+<span class="k">def</span> <span class="nf">_mann_kendall_from_sarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">sarray</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    code optimised mann kendall</span>
+
+<span class="sd">    :param x:</span>
+<span class="sd">    :param alpha:</span>
+<span class="sd">    :param sarray:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># calculate the unique data</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;need at least 3 data points&#39;</span>
+
+    <span class="c1"># calculate s</span>
+    <span class="k">if</span> <span class="n">sarray</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sarray</span> <span class="o">=</span> <span class="n">_make_s_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">sarray</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">sarray</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># calculate the var(s)</span>
+    <span class="n">unique_x</span><span class="p">,</span> <span class="n">unique_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">unique_mod</span> <span class="o">=</span> <span class="p">(</span><span class="n">unique_counts</span> <span class="o">*</span> <span class="p">(</span><span class="n">unique_counts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">unique_counts</span> <span class="o">+</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">unique_counts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">var_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">unique_mod</span><span class="p">)</span> <span class="o">/</span> <span class="mi">18</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_s</span><span class="p">)</span>
+
+    <span class="c1"># calculate the p_value</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>  <span class="c1"># two tail test</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span>
+    <span class="c1"># -1 decreasing, 0 no trend, 1 increasing</span>
+
+    <span class="k">return</span> <span class="n">trend</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">var_s</span>
+
+
+<span class="k">def</span> <span class="nf">_mann_kendall_old</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the duplicate from above is to return more parameters and put into the mann kendall class</span>
+<span class="sd">    retrieved from https://mail.scipy.org/pipermail/scipy-dev/2016-July/021413.html</span>
+<span class="sd">    this was depreciated as _mann_kendall_from_sarray is MUCH faster</span>
+<span class="sd">    Input:</span>
+<span class="sd">        x:   a vector of data</span>
+<span class="sd">        alpha: significance level (0.05 default)</span>
+<span class="sd">    Output:</span>
+<span class="sd">        trend: tells the trend (increasing, decreasing or no trend)</span>
+<span class="sd">        h: True (if trend is present) or False (if trend is absence)</span>
+<span class="sd">        p: p value of the significance test</span>
+<span class="sd">        z: normalized test statistics</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;this function is depreciated, use _mann_kendall_from_sarray&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># calculate S</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+    <span class="c1"># calculate the unique data</span>
+    <span class="n">unique_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_x</span><span class="p">)</span>
+
+    <span class="c1"># calculate the var(s)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">g</span><span class="p">:</span>  <span class="c1"># there is no tie</span>
+        <span class="n">var_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">))</span> <span class="o">/</span> <span class="mi">18</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># there are some ties in data</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">unique_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unique_x</span><span class="p">)):</span>
+            <span class="n">tp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">unique_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">var_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tp</span> <span class="o">*</span> <span class="p">(</span><span class="n">tp</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">tp</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">18</span>
+
+    <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_s</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_s</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;shouldnt get here&#39;</span><span class="p">)</span>
+
+    <span class="c1"># calculate the p_value</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>  <span class="c1"># two tail test</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">h</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">h</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">trend</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">trend</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">var_s</span>
+
+
+<span class="k">def</span> <span class="nf">_old_smk</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">data_col</span><span class="p">,</span> <span class="n">season_col</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">rm_na</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;this function is depreciated, use _mann_kendall_from_sarray&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rm_na</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">data_col</span><span class="p">,</span> <span class="n">season_col</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">data_col</span> <span class="o">=</span> <span class="n">data_col</span>
+    <span class="n">season_col</span> <span class="o">=</span> <span class="n">season_col</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+
+    <span class="c1"># get list of seasons</span>
+    <span class="n">season_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">season_col</span><span class="p">])</span>
+
+    <span class="c1"># calulate the seasonal MK values</span>
+    <span class="n">_season_outputs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">var_s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">season</span> <span class="ow">in</span> <span class="n">season_vals</span><span class="p">:</span>
+        <span class="n">tempdata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_col</span><span class="p">][</span><span class="n">data</span><span class="p">[</span><span class="n">season_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">season</span><span class="p">]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="n">_season_outputs</span><span class="p">[</span><span class="n">season</span><span class="p">]</span> <span class="o">=</span> <span class="n">MannKendall</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">tempdata</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">rm_na</span><span class="o">=</span><span class="n">rm_na</span><span class="p">)</span>
+        <span class="n">var_s</span> <span class="o">+=</span> <span class="n">_season_outputs</span><span class="p">[</span><span class="n">season</span><span class="p">]</span><span class="o">.</span><span class="n">var_s</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">_season_outputs</span><span class="p">[</span><span class="n">season</span><span class="p">]</span><span class="o">.</span><span class="n">s</span>
+
+    <span class="c1"># calculate the z value</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_s</span><span class="p">)</span>
+
+    <span class="n">h</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>  <span class="c1"># two tail test</span>
+    <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span>
+    <span class="c1"># -1 decreasing, 0 no trend, 1 increasing</span>
+    <span class="k">return</span> <span class="n">trend</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">var_s</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_seasonal_senslope</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">season</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;separate&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    modified from scipy/stats/_stats_mstats_common.py</span>
+<span class="sd">    Computes the Theil-Sen estimator for a set of points (x, y).</span>
+
+<span class="sd">    `theilslopes` implements a method for robust linear regression.  It</span>
+<span class="sd">    computes the slope as the median of all slopes between paired values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : array_like</span>
+<span class="sd">        Dependent variable.</span>
+<span class="sd">    x : array_like or None, optional</span>
+<span class="sd">        Independent variable. If None, use ``arange(len(y))`` instead.</span>
+<span class="sd">    alpha : float, optional</span>
+<span class="sd">        Confidence degree between 0 and 1. Default is 95% confidence.</span>
+<span class="sd">        Note that `alpha` is symmetric around 0.5, i.e. both 0.1 and 0.9 are</span>
+<span class="sd">        interpreted as &quot;find the 90% confidence interval&quot;.</span>
+<span class="sd">    method : {&#39;joint&#39;, &#39;separate&#39;}, optional</span>
+<span class="sd">        Method to be used for computing estimate for intercept.</span>
+<span class="sd">        Following methods are supported,</span>
+
+<span class="sd">            * &#39;joint&#39;: Uses np.median(y - slope * x) as intercept.</span>
+<span class="sd">            * &#39;separate&#39;: Uses np.median(y) - slope * np.median(x)</span>
+<span class="sd">                          as intercept.</span>
+
+<span class="sd">        The default is &#39;separate&#39;.</span>
+
+<span class="sd">        .. versionadded:: 1.8.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : ``TheilslopesResult`` instance</span>
+<span class="sd">        The return value is an object with the following attributes:</span>
+
+<span class="sd">        slope : float</span>
+<span class="sd">            Theil slope.</span>
+<span class="sd">        intercept : float</span>
+<span class="sd">            Intercept of the Theil line.</span>
+<span class="sd">        low_slope : float</span>
+<span class="sd">            Lower bound of the confidence interval on `slope`.</span>
+<span class="sd">        high_slope : float</span>
+<span class="sd">            Upper bound of the confidence interval on `slope`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    siegelslopes : a similar technique using repeated medians</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The implementation of `theilslopes` follows [1]_. The intercept is</span>
+<span class="sd">    not defined in [1]_, and here it is defined as ``median(y) -</span>
+<span class="sd">    slope*median(x)``, which is given in [3]_. Other definitions of</span>
+<span class="sd">    the intercept exist in the literature such as  ``median(y - slope*x)``</span>
+<span class="sd">    in [4]_. The approach to compute the intercept can be determined by the</span>
+<span class="sd">    parameter ``method``. A confidence interval for the intercept is not</span>
+<span class="sd">    given as this question is not addressed in [1]_.</span>
+
+<span class="sd">    For compatibility with older versions of SciPy, the return value acts</span>
+<span class="sd">    like a ``namedtuple`` of length 4, with fields ``slope``, ``intercept``,</span>
+<span class="sd">    ``low_slope``, and ``high_slope``, so one can continue to write::</span>
+
+<span class="sd">        slope, intercept, low_slope, high_slope = theilslopes(y, x)</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] P.K. Sen, &quot;Estimates of the regression coefficient based on</span>
+<span class="sd">           Kendall&#39;s tau&quot;, J. Am. Stat. Assoc., Vol. 63, pp. 1379-1389, 1968.</span>
+<span class="sd">    .. [2] H. Theil, &quot;A rank-invariant method of linear and polynomial</span>
+<span class="sd">           regression analysis I, II and III&quot;,  Nederl. Akad. Wetensch., Proc.</span>
+<span class="sd">           53:, pp. 386-392, pp. 521-525, pp. 1397-1412, 1950.</span>
+<span class="sd">    .. [3] W.L. Conover, &quot;Practical nonparametric statistics&quot;, 2nd ed.,</span>
+<span class="sd">           John Wiley and Sons, New York, pp. 493.</span>
+<span class="sd">    .. [4] https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;joint&#39;</span><span class="p">,</span> <span class="s1">&#39;separate&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;method must be either &#39;joint&#39; or &#39;separate&#39;.&quot;</span>
+                         <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is invalid.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+    <span class="c1"># We copy both x and y so we can use _find_repeats.</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">season</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">season</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">season</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Incompatible lengths ! (</span><span class="si">%s</span><span class="s2">&lt;&gt;</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span>
+                         <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">season</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Incompatible lengths ! (</span><span class="si">%s</span><span class="s2">&lt;&gt;</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span>
+                             <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Theil-Sen estimator is not defined for a single point.&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="c1"># Compute sorted slopes only when deltax &gt; 0</span>
+    <span class="n">deltax</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span>
+    <span class="n">deltay</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span>
+
+    <span class="c1"># remove slopes where the seasons do not match</span>
+    <span class="n">seasons_array_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">season</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">season</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">seasons_array_j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">season</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="nb">len</span><span class="p">(</span><span class="n">season</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">seasons_array</span> <span class="o">=</span> <span class="n">seasons_array_i</span> <span class="o">==</span> <span class="n">seasons_array_j</span>
+    <span class="n">deltax</span><span class="p">[</span><span class="o">~</span><span class="n">seasons_array</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">deltay</span><span class="p">[</span><span class="o">~</span><span class="n">seasons_array</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">slopes</span> <span class="o">=</span> <span class="n">deltay</span><span class="p">[</span><span class="n">deltax</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">deltax</span><span class="p">[</span><span class="n">deltax</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">slopes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;All `x` coordinates are identical.&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">slopes</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">medslope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">slopes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;joint&#39;</span><span class="p">:</span>
+        <span class="n">medinter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">medslope</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">medinter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">medslope</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Now compute confidence intervals</span>
+    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">alpha</span>
+    <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">distributions</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">distributions</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span>
+    <span class="c1"># This implements (2.6) from Sen (1968)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">nxreps</span> <span class="o">=</span> <span class="n">_find_repeats</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">nyreps</span> <span class="o">=</span> <span class="n">_find_repeats</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">nt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slopes</span><span class="p">)</span>  <span class="c1"># N in Sen (1968)</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># n in Sen (1968)</span>
+    <span class="c1"># Equation 2.6 in Sen (1968):</span>
+    <span class="n">sigsq</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">18.</span> <span class="o">*</span> <span class="p">(</span><span class="n">ny</span> <span class="o">*</span> <span class="p">(</span><span class="n">ny</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-</span>
+                       <span class="nb">sum</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">nxreps</span><span class="p">)</span> <span class="o">-</span>
+                       <span class="nb">sum</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">nyreps</span><span class="p">))</span>
+    <span class="c1"># Find the confidence interval indices in `slopes`</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigsq</span><span class="p">)</span>
+        <span class="n">Ru</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">nt</span> <span class="o">-</span> <span class="n">z</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span> <span class="nb">len</span><span class="p">(</span><span class="n">slopes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">Rl</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">nt</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[[</span><span class="n">Rl</span><span class="p">,</span> <span class="n">Ru</span><span class="p">]]</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">low_slope</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">high_slope</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">medslope</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="n">medinter</span>
+    <span class="k">return</span> <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">low_slope</span><span class="p">,</span> <span class="n">high_slope</span>
+
+
+<span class="k">def</span> <span class="nf">get_colors</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">):</span>
+    <span class="n">n_scens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_scens</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">(</span><span class="n">e</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_scens</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_scens</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="mi">20</span><span class="p">))</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">colors</span>
+
+
+<span class="k">def</span> <span class="nf">_find_repeats</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="c1"># taken from scipy.stats._stats_mstats_common._find_repeats</span>
+    <span class="c1"># This function assumes it may clobber its input.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+
+    <span class="c1"># XXX This cast was previously needed for the Fortran implementation,</span>
+    <span class="c1"># should we ditch it?</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">arr</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+    <span class="c1"># Taken from NumPy 1.9&#39;s np.unique.</span>
+    <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="kc">True</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">arr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">unique</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">change</span><span class="p">]</span>
+    <span class="n">change_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">change</span><span class="p">)</span> <span class="o">+</span> <span class="p">([</span><span class="n">arr</span><span class="o">.</span><span class="n">size</span><span class="p">],))</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">change_idx</span><span class="p">)</span>
+    <span class="n">atleast2</span> <span class="o">=</span> <span class="n">freq</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">unique</span><span class="p">[</span><span class="n">atleast2</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="n">atleast2</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="MannKendall">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.MannKendall">[docs]</a>
+<span class="k">class</span> <span class="nc">MannKendall</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index</span>
+
+<span class="sd">    :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing</span>
+<span class="sd">    :param h: boolean, True if the trend is significant</span>
+<span class="sd">    :param p: the p value of the trend</span>
+<span class="sd">    :param z: the z value of the trend</span>
+<span class="sd">    :param s: the s value of the trend</span>
+<span class="sd">    :param var_s: the variance of the s value</span>
+<span class="sd">    :param alpha: the alpha value used to calculate the trend</span>
+<span class="sd">    :param data: the data used to calculate the trend</span>
+<span class="sd">    :param data_col: the column of the data used to calculate the trend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">trend_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;increasing&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;decreasing&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;no trend&#39;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">data_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rm_na</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+
+        <span class="k">if</span> <span class="n">data_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">test_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rm_na</span><span class="p">:</span>
+            <span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">test_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_col</span> <span class="o">=</span> <span class="n">data_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trend</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_s</span> <span class="o">=</span> <span class="n">_mann_kendall_from_sarray</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MannKendall.calc_senslope">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.MannKendall.calc_senslope">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc_senslope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate the senslope of the data</span>
+
+<span class="sd">        :return: senslope, senintercept, lo_slope, up_slope</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">senslope</span><span class="p">,</span> <span class="n">senintercept</span><span class="p">,</span> <span class="n">lo_slope</span><span class="p">,</span> <span class="n">up_slope</span> <span class="o">=</span> <span class="n">mstats</span><span class="o">.</span><span class="n">theilslopes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">senslope</span><span class="p">,</span> <span class="n">senintercept</span><span class="p">,</span> <span class="n">lo_slope</span><span class="p">,</span> <span class="n">up_slope</span></div>
+
+
+<div class="viewcode-block" id="MannKendall.plot_data">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.MannKendall.plot_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        plot the data and the senslope fit</span>
+
+<span class="sd">        :param ax: optional matplotlib axis to plot the data on</span>
+<span class="sd">        :param kwargs: kwargs to pass to plt.scatter for the raw data</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span>
+
+        <span class="n">sslope</span><span class="p">,</span> <span class="n">sintercept</span><span class="p">,</span> <span class="n">lo_slope</span><span class="p">,</span> <span class="n">up_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_senslope</span><span class="p">()</span>
+        <span class="c1"># plot the senslope fit and intercept</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">sslope</span> <span class="o">+</span> <span class="n">sintercept</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;sen slope fit&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;color&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;raw data&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sen slope fit: </span><span class="si">{</span><span class="n">sslope</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sen intercept: </span><span class="si">{</span><span class="n">sintercept</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;trend: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">trend_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trend</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;p: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="si">:</span><span class="s1">0.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="SeasonalKendall.map_trend">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.SeasonalKendall.map_trend">[docs]</a>
+<div class="viewcode-block" id="MannKendall.map_trend">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.MannKendall.map_trend">[docs]</a>
+    <span class="k">def</span> <span class="nf">map_trend</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)</span>
+
+<span class="sd">        :param val: trend value</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">MannKendall</span><span class="o">.</span><span class="n">trend_dict</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span></div>
+</div>
+</div>
+
+
+
+<div class="viewcode-block" id="SeasonalKendall">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.SeasonalKendall">[docs]</a>
+<span class="k">class</span> <span class="nc">SeasonalKendall</span><span class="p">(</span><span class="n">MannKendall</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    an object to hold and calculate seasonal kendall trends</span>
+
+<span class="sd">    :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing</span>
+<span class="sd">    :param h: boolean, True if the trend is significant</span>
+<span class="sd">    :param p: the p value of the trend</span>
+<span class="sd">    :param z: the z value of the trend</span>
+<span class="sd">    :param s: the s value of the trend</span>
+<span class="sd">    :param var_s: the variance of the s value</span>
+<span class="sd">    :param alpha: the alpha value used to calculate the trend</span>
+<span class="sd">    :param data: the data used to calculate the trend</span>
+<span class="sd">    :param data_col: the column of the data used to calculate the trend</span>
+<span class="sd">    :param season_col: the column of the season data used to calculate the trend</span>
+<span class="sd">    :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">data_col</span><span class="p">,</span> <span class="n">season_col</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">rm_na</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">freq_limit</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trend_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;increasing&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;decreasing&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;no trend&#39;</span><span class="p">}</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s1">&#39;df must be a pandas DataFrame&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq_limit</span> <span class="o">=</span> <span class="n">freq_limit</span>
+        <span class="k">if</span> <span class="n">rm_na</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">data_col</span><span class="p">,</span> <span class="n">season_col</span><span class="p">])</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_col</span> <span class="o">=</span> <span class="n">data_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">season_col</span> <span class="o">=</span> <span class="n">season_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">season_data</span> <span class="o">=</span> <span class="n">season_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">season_col</span><span class="p">]</span>
+
+        <span class="n">trend</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">var_s</span> <span class="o">=</span> <span class="n">_seasonal_mann_kendall_from_sarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">season_data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">sarray</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                      <span class="n">freq_limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_limit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trend</span> <span class="o">=</span> <span class="n">trend</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var_s</span> <span class="o">=</span> <span class="n">var_s</span>
+
+        <span class="c1"># -1 decreasing, 0 no trend, 1 increasing</span>
+
+<div class="viewcode-block" id="SeasonalKendall.calc_senslope">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.SeasonalKendall.calc_senslope">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc_senslope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate the senslope of the data</span>
+<span class="sd">        :return: senslope, senintercept, lo_slope, lo_intercept</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">senslope</span><span class="p">,</span> <span class="n">senintercept</span><span class="p">,</span> <span class="n">lo_slope</span><span class="p">,</span> <span class="n">lo_intercept</span> <span class="o">=</span> <span class="n">_calc_seasonal_senslope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data_col</span><span class="p">],</span>
+                                                                                 <span class="bp">self</span><span class="o">.</span><span class="n">season_data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                                                                                 <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">senslope</span><span class="p">,</span> <span class="n">senintercept</span><span class="p">,</span> <span class="n">lo_slope</span><span class="p">,</span> <span class="n">lo_intercept</span></div>
+
+
+<div class="viewcode-block" id="SeasonalKendall.plot_data">
+<a class="viewcode-back" href="../../../autoapi/komanawa/kendall_stats/mann_kendall/index.html#komanawa.kendall_stats.SeasonalKendall.plot_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        plot the data and the senslope fit</span>
+
+<span class="sd">        :param ax: optional matplotlib axis to plot the data on</span>
+<span class="sd">        :param kwargs: kwargs to pass to plt.scatter for the raw data (note that the seasonal column is passed to scatter as c)</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span>
+
+        <span class="n">sslope</span><span class="p">,</span> <span class="n">sintercept</span><span class="p">,</span> <span class="n">lo_slope</span><span class="p">,</span> <span class="n">up_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_senslope</span><span class="p">()</span>
+        <span class="c1"># plot the senslope fit and intercept</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">sslope</span> <span class="o">+</span> <span class="n">sintercept</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;sen slope fit&#39;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data_col</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">season_data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;raw data&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sen slope fit: </span><span class="si">{</span><span class="n">sslope</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sen intercept: </span><span class="si">{</span><span class="n">sintercept</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;trend: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">trend_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trend</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">))</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;p: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Matt Dumont.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

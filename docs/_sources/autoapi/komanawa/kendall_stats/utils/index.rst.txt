@@ -1,0 +1,35 @@
+:py:mod:`komanawa.kendall_stats.utils`
+======================================
+
+.. py:module:: komanawa.kendall_stats.utils
+
+.. autoapi-nested-parse::
+
+   created matt_dumont 
+   on: 29/09/23
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   komanawa.kendall_stats.utils.estimate_runtime
+
+
+
+.. py:function:: estimate_runtime(npoints, func, plot=False)
+
+   assumes linear log-log relationship between runtime and number of points
+
+   :param npoints:
+   :param func:
+   :param plot: if True then plot the data and the regression line
+   :return:
+
+
