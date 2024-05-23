@@ -1,0 +1,12 @@
+komanawa.kendall_stats.version
+==============================
+
+.. py:module:: komanawa.kendall_stats.version
+
+.. autoapi-nested-parse::
+
+   created matt_dumont 
+   on: 23/05/24
+
+
+

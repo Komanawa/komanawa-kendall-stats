@@ -1,5 +1,5 @@
-:py:mod:`komanawa.kendall_stats`
-================================
+komanawa.kendall_stats
+======================
 
 .. py:module:: komanawa.kendall_stats
 
@@ -12,44 +12,89 @@
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   example_data/index.rst
-   mann_kendall/index.rst
-   multi_part_kendall/index.rst
-   time_tests/index.rst
-   time_tests_check_step_window/index.rst
-   utils/index.rst
+   /autoapi/komanawa/kendall_stats/example_data/index
+   /autoapi/komanawa/kendall_stats/mann_kendall/index
+   /autoapi/komanawa/kendall_stats/multi_part_kendall/index
+   /autoapi/komanawa/kendall_stats/time_tests/index
+   /autoapi/komanawa/kendall_stats/time_tests_check_step_window/index
+   /autoapi/komanawa/kendall_stats/utils/index
+   /autoapi/komanawa/kendall_stats/version/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
-   komanawa.kendall_stats.MultiPartKendall
-   komanawa.kendall_stats.SeasonalMultiPartKendall
    komanawa.kendall_stats.MannKendall
+   komanawa.kendall_stats.MultiPartKendall
    komanawa.kendall_stats.SeasonalKendall
-
+   komanawa.kendall_stats.SeasonalMultiPartKendall
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    komanawa.kendall_stats.estimate_runtime
 
 
+Package Contents
+----------------
+
+.. py:class:: MannKendall(data, alpha=0.05, data_col=None, rm_na=True)
+
+   Bases: :py:obj:`object`
+
+
+   an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index
+
+   :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
+   :param h: boolean, True if the trend is significant
+   :param p: the p value of the trend
+   :param z: the z value of the trend
+   :param s: the s value of the trend
+   :param var_s: the variance of the s value
+   :param alpha: the alpha value used to calculate the trend
+   :param data: the data used to calculate the trend
+   :param data_col: the column of the data used to calculate the trend
+
+
+   .. py:method:: calc_senslope()
+
+      calculate the senslope of the data
+
+      :return: senslope, senintercept, lo_slope, up_slope
+
+
+
+   .. py:method:: map_trend()
+      :classmethod:
+
+
+      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
+
+      :param val: trend value
+      :return:
+
+
+
+   .. py:method:: plot_data(ax=None, **kwargs)
+
+      plot the data and the senslope fit
+
+      :param ax: optional matplotlib axis to plot the data on
+      :param kwargs: kwargs to pass to plt.scatter for the raw data
+      :return:
+
+
 
 .. py:class:: MultiPartKendall(data, nparts=2, expect_part=(1, -1), min_size=10, alpha=0.05, no_trend_alpha=0.5, data_col=None, rm_na=True, serialise_path=None, check_step=1, check_window=None, recalc=False, initalize=True)
-
 
    
    multi part mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0 note where the expected trend is zero the lack of a trend is considered significant if p > 1-alpha
@@ -74,10 +119,16 @@ Functions
    :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
    :return:
 
-   .. py:method:: print_mk_diffs(other)
 
-      convenience function to print the differences between two MultiPartKendall classes
-      :param other: another MultiPartKendall class
+   .. py:method:: from_file()
+      :classmethod:
+
+
+      load the class from a serialised file
+
+      :param path: path to the serialised file
+      :return: MultiPartKendall
+
 
 
    .. py:method:: get_acceptable_matches()
@@ -86,10 +137,23 @@ Functions
       :return: pd.DataFrame
 
 
+
    .. py:method:: get_all_matches()
 
       get the all matches for the multipart kendall test (including those that are not significant)
       :return: pd.DataFrame
+
+
+
+   .. py:method:: get_data_from_breakpoints(breakpoints)
+
+      get the data from the breakpoints
+
+      :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
+
+      :return: outdata: list of dataframes for each part of the time series
+      :return: kendal_stats: dataframe of kendal stats for each part of the time series
+
 
 
    .. py:method:: get_maxz_breakpoints(raise_on_none=False)
@@ -107,15 +171,6 @@ Functions
       :return: array of breakpoint tuples
 
 
-   .. py:method:: get_data_from_breakpoints(breakpoints)
-
-      get the data from the breakpoints
-
-      :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
-
-      :return: outdata: list of dataframes for each part of the time series
-      :return: kendal_stats: dataframe of kendal stats for each part of the time series
-
 
    .. py:method:: plot_acceptable_matches(key)
 
@@ -123,6 +178,7 @@ Functions
 
       :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint]) or 'all' a figure for each value note joint stats only have 1 value
       :return:
+
 
 
    .. py:method:: plot_data_from_breakpoints(breakpoints, ax=None, txt_vloc=-0.05, add_labels=True, **kwargs)
@@ -137,6 +193,14 @@ Functions
       :return: fig, ax
 
 
+
+   .. py:method:: print_mk_diffs(other)
+
+      convenience function to print the differences between two MultiPartKendall classes
+      :param other: another MultiPartKendall class
+
+
+
    .. py:method:: to_file(save_path=None, complevel=9, complib='blosc:lz4')
 
       save the data to a hdf file
@@ -147,23 +211,65 @@ Functions
       :return:
 
 
-   .. py:method:: from_file()
+
+.. py:class:: SeasonalKendall(df, data_col, season_col, alpha=0.05, rm_na=True, freq_limit=0.05)
+
+   Bases: :py:obj:`MannKendall`
+
+   .. autoapi-inheritance-diagram:: komanawa.kendall_stats.SeasonalKendall
+      :parts: 1
+
+
+   an object to hold and calculate seasonal kendall trends
+
+   :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
+   :param h: boolean, True if the trend is significant
+   :param p: the p value of the trend
+   :param z: the z value of the trend
+   :param s: the s value of the trend
+   :param var_s: the variance of the s value
+   :param alpha: the alpha value used to calculate the trend
+   :param data: the data used to calculate the trend
+   :param data_col: the column of the data used to calculate the trend
+   :param season_col: the column of the season data used to calculate the trend
+   :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning
+
+
+   .. py:method:: calc_senslope()
+
+      calculate the senslope of the data
+      :return: senslope, senintercept, lo_slope, lo_intercept
+
+
+
+   .. py:method:: map_trend()
       :classmethod:
 
-      load the class from a serialised file
 
-      :param path: path to the serialised file
-      :return: MultiPartKendall
+      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
+
+      :param val: trend value
+      :return:
+
+
+
+   .. py:method:: plot_data(ax=None, **kwargs)
+
+      plot the data and the senslope fit
+
+      :param ax: optional matplotlib axis to plot the data on
+      :param kwargs: kwargs to pass to plt.scatter for the raw data (note that the seasonal column is passed to scatter as c)
+      :return:
 
 
 
 .. py:class:: SeasonalMultiPartKendall(data, data_col, season_col, nparts=2, expect_part=(1, -1), min_size=10, alpha=0.05, no_trend_alpha=0.5, rm_na=True, serialise_path=None, freq_limit=0.05, check_step=1, check_window=None, recalc=False, initalize=True)
 
-
    Bases: :py:obj:`MultiPartKendall`
 
    .. autoapi-inheritance-diagram:: komanawa.kendall_stats.SeasonalMultiPartKendall
       :parts: 1
+
 
    
    multi part seasonal mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
@@ -189,19 +295,16 @@ Functions
    :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
    :return:
 
+
    .. py:method:: from_file()
       :classmethod:
+
 
       load the class from a serialised file
 
       :param path:
       :return:
 
-
-   .. py:method:: print_mk_diffs(other)
-
-      convenience function to print the differences between two MultiPartKendall classes
-      :param other: another MultiPartKendall class
 
 
    .. py:method:: get_acceptable_matches()
@@ -210,10 +313,23 @@ Functions
       :return: pd.DataFrame
 
 
+
    .. py:method:: get_all_matches()
 
       get the all matches for the multipart kendall test (including those that are not significant)
       :return: pd.DataFrame
+
+
+
+   .. py:method:: get_data_from_breakpoints(breakpoints)
+
+      get the data from the breakpoints
+
+      :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
+
+      :return: outdata: list of dataframes for each part of the time series
+      :return: kendal_stats: dataframe of kendal stats for each part of the time series
+
 
 
    .. py:method:: get_maxz_breakpoints(raise_on_none=False)
@@ -231,15 +347,6 @@ Functions
       :return: array of breakpoint tuples
 
 
-   .. py:method:: get_data_from_breakpoints(breakpoints)
-
-      get the data from the breakpoints
-
-      :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
-
-      :return: outdata: list of dataframes for each part of the time series
-      :return: kendal_stats: dataframe of kendal stats for each part of the time series
-
 
    .. py:method:: plot_acceptable_matches(key)
 
@@ -247,6 +354,7 @@ Functions
 
       :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint]) or 'all' a figure for each value note joint stats only have 1 value
       :return:
+
 
 
    .. py:method:: plot_data_from_breakpoints(breakpoints, ax=None, txt_vloc=-0.05, add_labels=True, **kwargs)
@@ -261,6 +369,14 @@ Functions
       :return: fig, ax
 
 
+
+   .. py:method:: print_mk_diffs(other)
+
+      convenience function to print the differences between two MultiPartKendall classes
+      :param other: another MultiPartKendall class
+
+
+
    .. py:method:: to_file(save_path=None, complevel=9, complib='blosc:lz4')
 
       save the data to a hdf file
@@ -268,96 +384,6 @@ Functions
       :param save_path: None (save to self.serialise_path) or path to save the file
       :param complevel: compression level for hdf
       :param complib: compression library for hdf
-      :return:
-
-
-
-.. py:class:: MannKendall(data, alpha=0.05, data_col=None, rm_na=True)
-
-
-   Bases: :py:obj:`object`
-
-   an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index
-
-   :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
-   :param h: boolean, True if the trend is significant
-   :param p: the p value of the trend
-   :param z: the z value of the trend
-   :param s: the s value of the trend
-   :param var_s: the variance of the s value
-   :param alpha: the alpha value used to calculate the trend
-   :param data: the data used to calculate the trend
-   :param data_col: the column of the data used to calculate the trend
-
-   .. py:method:: calc_senslope()
-
-      calculate the senslope of the data
-
-      :return: senslope, senintercept, lo_slope, up_slope
-
-
-   .. py:method:: plot_data(ax=None, **kwargs)
-
-      plot the data and the senslope fit
-
-      :param ax: optional matplotlib axis to plot the data on
-      :param kwargs: kwargs to pass to plt.scatter for the raw data
-      :return:
-
-
-   .. py:method:: map_trend()
-      :classmethod:
-
-      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
-
-      :param val: trend value
-      :return:
-
-
-
-.. py:class:: SeasonalKendall(df, data_col, season_col, alpha=0.05, rm_na=True, freq_limit=0.05)
-
-
-   Bases: :py:obj:`MannKendall`
-
-   .. autoapi-inheritance-diagram:: komanawa.kendall_stats.SeasonalKendall
-      :parts: 1
-
-   an object to hold and calculate seasonal kendall trends
-
-   :param trend: the trend of the data, -1 decreasing, 0 no trend, 1 increasing
-   :param h: boolean, True if the trend is significant
-   :param p: the p value of the trend
-   :param z: the z value of the trend
-   :param s: the s value of the trend
-   :param var_s: the variance of the s value
-   :param alpha: the alpha value used to calculate the trend
-   :param data: the data used to calculate the trend
-   :param data_col: the column of the data used to calculate the trend
-   :param season_col: the column of the season data used to calculate the trend
-   :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning
-
-   .. py:method:: calc_senslope()
-
-      calculate the senslope of the data
-      :return: senslope, senintercept, lo_slope, lo_intercept
-
-
-   .. py:method:: plot_data(ax=None, **kwargs)
-
-      plot the data and the senslope fit
-
-      :param ax: optional matplotlib axis to plot the data on
-      :param kwargs: kwargs to pass to plt.scatter for the raw data (note that the seasonal column is passed to scatter as c)
-      :return:
-
-
-   .. py:method:: map_trend()
-      :classmethod:
-
-      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
-
-      :param val: trend value
       :return:
 
 

@@ -8,6 +8,11 @@ a small repo that holds:
 * MultiPartKendall: non parametric change point detection
 * SeasonalMultiPartKendall: non parametric change point detection with seasonality
 
+:Author: |author|
+:copyright: |copyright|
+:Version: |release|
+:Date: |today|
+
 .. toctree::
     :maxdepth: 2
     :hidden:
