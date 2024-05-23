@@ -1,5 +1,5 @@
-:py:mod:`komanawa.kendall_stats.time_tests_check_step_window`
-=============================================================
+komanawa.kendall_stats.time_tests_check_step_window
+===================================================
 
 .. py:module:: komanawa.kendall_stats.time_tests_check_step_window
 
@@ -13,16 +13,266 @@
 
 
 
-Module Contents
----------------
+Classes
+-------
+
+.. autoapisummary::
+
+   komanawa.kendall_stats.time_tests_check_step_window.MultiPartKendall
+   komanawa.kendall_stats.time_tests_check_step_window.SeasonalMultiPartKendall
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    komanawa.kendall_stats.time_tests_check_step_window.timeit_test
+
+
+Module Contents
+---------------
+
+.. py:class:: MultiPartKendall(data, nparts=2, expect_part=(1, -1), min_size=10, alpha=0.05, no_trend_alpha=0.5, data_col=None, rm_na=True, serialise_path=None, check_step=1, check_window=None, recalc=False, initalize=True)
+
+   
+   multi part mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0 note where the expected trend is zero the lack of a trend is considered significant if p > 1-alpha
+
+   :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index) if np.array or list expects the data to be in sample order
+   :param nparts: number of parts to split the time series into
+   :param expect_part: expected trend in each part of the time series (1 increasing, -1 decreasing, 0 no trend)
+   :param min_size: minimum size for the first and last section of the time series
+   :param alpha: significance level
+   :param no_trend_alpha: significance level for no trend e.g. will accept if p> no_trend_alpha
+   :param data_col: if data is a DataFrame or Series, the column to use
+   :param rm_na: remove na values from the data
+   :param serialise_path: path to serialised file (as hdf), if None will not serialise
+   :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point, if 2 will check every second point
+   :param check_window: the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test. Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6)) One of:
+
+       * None or tuple (start_idx, end_idx) (one breakpoint only)
+       * list of tuples of len nparts-1 with a start/end idx for each part,
+       * or a 2d array shape (nparts-1, 2) with a start/end idx for each part,
+
+   :param recalc: if True will recalculate the mann kendall even if the serialised file exists
+   :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
+   :return:
+
+
+   .. py:method:: from_file()
+      :classmethod:
+
+
+      load the class from a serialised file
+
+      :param path: path to the serialised file
+      :return: MultiPartKendall
+
+
+
+   .. py:method:: get_acceptable_matches()
+
+      get the acceptable matches for the multipart kendall test
+      :return: pd.DataFrame
+
+
+
+   .. py:method:: get_all_matches()
+
+      get the all matches for the multipart kendall test (including those that are not significant)
+      :return: pd.DataFrame
+
+
+
+   .. py:method:: get_data_from_breakpoints(breakpoints)
+
+      get the data from the breakpoints
+
+      :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
+
+      :return: outdata: list of dataframes for each part of the time series
+      :return: kendal_stats: dataframe of kendal stats for each part of the time series
+
+
+
+   .. py:method:: get_maxz_breakpoints(raise_on_none=False)
+
+      get the breakpoints for the maximum joint normalised (min-max for each part) z the best match is the maximum znorm_joint value where:
+
+         *  if expected trend == 1 or -1:
+            *  znorm = the min-max normalised z value for each part
+         *  else: (no trend expected)
+            *  znorm = 1 - the min-max normalised z value for each part
+         *  and
+            *  znorm_joint = the sum of the znorm values for each part
+
+      :param raise_on_none: bool, if True will raise an error if no acceptable matches, otherwise will return None
+      :return: array of breakpoint tuples
+
+
+
+   .. py:method:: plot_acceptable_matches(key)
+
+      quickly plot the acceptable matches
+
+      :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint]) or 'all' a figure for each value note joint stats only have 1 value
+      :return:
+
+
+
+   .. py:method:: plot_data_from_breakpoints(breakpoints, ax=None, txt_vloc=-0.05, add_labels=True, **kwargs)
+
+      plot the data from the breakpoints including the senslope fits
+
+      :param breakpoints:
+      :param ax: ax to plot on if None then create the ax
+      :param txt_vloc: vertical location of the text (in ax.transAxes)
+      :param add_labels: boolean, if True add labels (slope, pval) to the plot
+      :param kwargs: passed to ax.scatter (all parts)
+      :return: fig, ax
+
+
+
+   .. py:method:: print_mk_diffs(other)
+
+      convenience function to print the differences between two MultiPartKendall classes
+      :param other: another MultiPartKendall class
+
+
+
+   .. py:method:: to_file(save_path=None, complevel=9, complib='blosc:lz4')
+
+      save the data to a hdf file
+
+      :param save_path: None (save to self.serialise_path) or path to save the file
+      :param complevel: compression level for hdf
+      :param complib: compression library for hdf
+      :return:
+
+
+
+.. py:class:: SeasonalMultiPartKendall(data, data_col, season_col, nparts=2, expect_part=(1, -1), min_size=10, alpha=0.05, no_trend_alpha=0.5, rm_na=True, serialise_path=None, freq_limit=0.05, check_step=1, check_window=None, recalc=False, initalize=True)
+
+   Bases: :py:obj:`MultiPartKendall`
+
+   .. autoapi-inheritance-diagram:: komanawa.kendall_stats.time_tests_check_step_window.SeasonalMultiPartKendall
+      :parts: 1
+
+
+   
+   multi part seasonal mann kendall test to indentify a change point(s) in a time series after Frollini et al., 2020, DOI: 10.1007/s11356-020-11998-0
+
+   :param data: time series data, if DataFrame or Series, expects the index to be sample order (will sort on index)if np.array or list expects the data to be in sample order
+   :param data_col: if data is a DataFrame or Series, the column to use
+   :param season_col: the column to use for the season
+   :param nparts: number of parts to split the time series into
+   :param expect_part: expected trend in each part of the time series (1 increasing, -1 decreasing, 0 no trend)
+   :param min_size: minimum size for the first and last section of the time series
+   :param alpha: significance level
+   :param no_trend_alpha: significance level for no trend e.g. will accept if p> no_trend_alpha
+   :param rm_na: remove na values from the data
+   :param serialise_path: path to serialised file (as hdf), if None will not serialise
+   :param check_step: int, the step to check for breakpoints, e.g. if 1 will check every point, if 2 will check every second point
+   :param check_window: the window to check for breakpoints.  if None will use the whole data.  this is used to significantly speed up the mann kendall test Note that check_step still applies to the check_window (e.g. a check_window of (2, 6) with a check_step of 2 will check the points (2, 4, 6))  one of:
+
+          * None or tuple (start_idx, end_idx) (one breakpoint only)
+          * or list of tuples of len nparts-1 with a start/end idx for each part,
+          * or a 2d array shape (nparts-1, 2) with a start/end idx for each part
+
+   :param recalc: if True will recalculate the mann kendall even if the serialised file exists
+   :param initalize: if True will initalize the class from the data, only set to False used in self.from_file
+   :return:
+
+
+   .. py:method:: from_file()
+      :classmethod:
+
+
+      load the class from a serialised file
+
+      :param path:
+      :return:
+
+
+
+   .. py:method:: get_acceptable_matches()
+
+      get the acceptable matches for the multipart kendall test
+      :return: pd.DataFrame
+
+
+
+   .. py:method:: get_all_matches()
+
+      get the all matches for the multipart kendall test (including those that are not significant)
+      :return: pd.DataFrame
+
+
+
+   .. py:method:: get_data_from_breakpoints(breakpoints)
+
+      get the data from the breakpoints
+
+      :param breakpoints: beakpoints to split the data, e.g. from self.get_acceptable_matches
+
+      :return: outdata: list of dataframes for each part of the time series
+      :return: kendal_stats: dataframe of kendal stats for each part of the time series
+
+
+
+   .. py:method:: get_maxz_breakpoints(raise_on_none=False)
+
+      get the breakpoints for the maximum joint normalised (min-max for each part) z the best match is the maximum znorm_joint value where:
+
+         *  if expected trend == 1 or -1:
+            *  znorm = the min-max normalised z value for each part
+         *  else: (no trend expected)
+            *  znorm = 1 - the min-max normalised z value for each part
+         *  and
+            *  znorm_joint = the sum of the znorm values for each part
+
+      :param raise_on_none: bool, if True will raise an error if no acceptable matches, otherwise will return None
+      :return: array of breakpoint tuples
+
+
+
+   .. py:method:: plot_acceptable_matches(key)
+
+      quickly plot the acceptable matches
+
+      :param key: key to plot (one of ['p', 'z', 's', 'var_s','znorm', znorm_joint]) or 'all' a figure for each value note joint stats only have 1 value
+      :return:
+
+
+
+   .. py:method:: plot_data_from_breakpoints(breakpoints, ax=None, txt_vloc=-0.05, add_labels=True, **kwargs)
+
+      plot the data from the breakpoints including the senslope fits
+
+      :param breakpoints:
+      :param ax: ax to plot on if None then create the ax
+      :param txt_vloc: vertical location of the text (in ax.transAxes)
+      :param add_labels: boolean, if True add labels (slope, pval) to the plot
+      :param kwargs: passed to ax.scatter (all parts)
+      :return: fig, ax
+
+
+
+   .. py:method:: print_mk_diffs(other)
+
+      convenience function to print the differences between two MultiPartKendall classes
+      :param other: another MultiPartKendall class
+
+
+
+   .. py:method:: to_file(save_path=None, complevel=9, complib='blosc:lz4')
+
+      save the data to a hdf file
+
+      :param save_path: None (save to self.serialise_path) or path to save the file
+      :param complevel: compression level for hdf
+      :param complib: compression library for hdf
+      :return:
 
 
 

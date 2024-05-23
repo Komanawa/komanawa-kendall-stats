@@ -1,5 +1,5 @@
-:py:mod:`komanawa.kendall_stats.example_data`
-=============================================
+komanawa.kendall_stats.example_data
+===================================
 
 .. py:module:: komanawa.kendall_stats.example_data
 
@@ -10,23 +10,21 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    komanawa.kendall_stats.example_data.make_increasing_decreasing_data
-   komanawa.kendall_stats.example_data.make_seasonal_data
-   komanawa.kendall_stats.example_data.make_multipart_sharp_change_data
    komanawa.kendall_stats.example_data.make_multipart_parabolic_data
+   komanawa.kendall_stats.example_data.make_multipart_sharp_change_data
+   komanawa.kendall_stats.example_data.make_seasonal_data
    komanawa.kendall_stats.example_data.make_seasonal_multipart_parabolic
    komanawa.kendall_stats.example_data.make_seasonal_multipart_sharp_change
 
 
+Module Contents
+---------------
 
 .. py:function:: make_increasing_decreasing_data(slope=1, noise=1, step=1)
 
@@ -38,16 +36,15 @@ Functions
    :return: x,y (np.arrays)
 
 
-.. py:function:: make_seasonal_data(slope, noise, unsort, na_data, step=1)
+.. py:function:: make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1)
 
-   make seasonal test data
+   note the slope is multiplied by -1 to retain the same standards make_sharp_change_data positive slope is increasing and then decreasing, negative is opposite
 
    :param slope: slope for line
    :param noise: noise to add to data
    :param unsort: make the data unsorted (for testing purposes)
    :param na_data: add some na data to the data (for testing purposes)
-   :param step: spacing of data
-   :return: pd.DataFrame
+   :return: x,y (np.arrays)
 
 
 .. py:function:: make_multipart_sharp_change_data(slope, noise, unsort, na_data, step=1)
@@ -61,15 +58,16 @@ Functions
    :return: x,y (np.arrays)
 
 
-.. py:function:: make_multipart_parabolic_data(slope, noise, unsort, na_data, step=1)
+.. py:function:: make_seasonal_data(slope, noise, unsort, na_data, step=1)
 
-   note the slope is multiplied by -1 to retain the same standards make_sharp_change_data positive slope is increasing and then decreasing, negative is opposite
+   make seasonal test data
 
    :param slope: slope for line
    :param noise: noise to add to data
    :param unsort: make the data unsorted (for testing purposes)
    :param na_data: add some na data to the data (for testing purposes)
-   :return: x,y (np.arrays)
+   :param step: spacing of data
+   :return: pd.DataFrame
 
 
 .. py:function:: make_seasonal_multipart_parabolic(slope, noise, unsort, na_data, step=1)

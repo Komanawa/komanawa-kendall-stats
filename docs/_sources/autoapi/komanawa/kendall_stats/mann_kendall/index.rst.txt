@@ -1,5 +1,5 @@
-:py:mod:`komanawa.kendall_stats.mann_kendall`
-=============================================
+komanawa.kendall_stats.mann_kendall
+===================================
 
 .. py:module:: komanawa.kendall_stats.mann_kendall
 
@@ -10,11 +10,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -22,12 +19,13 @@ Classes
    komanawa.kendall_stats.mann_kendall.SeasonalKendall
 
 
-
+Module Contents
+---------------
 
 .. py:class:: MannKendall(data, alpha=0.05, data_col=None, rm_na=True)
 
-
    Bases: :py:obj:`object`
+
 
    an object to hold and calculate kendall trends assumes a pandas dataframe or series with a time index
 
@@ -41,11 +39,24 @@ Classes
    :param data: the data used to calculate the trend
    :param data_col: the column of the data used to calculate the trend
 
+
    .. py:method:: calc_senslope()
 
       calculate the senslope of the data
 
       :return: senslope, senintercept, lo_slope, up_slope
+
+
+
+   .. py:method:: map_trend()
+      :classmethod:
+
+
+      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
+
+      :param val: trend value
+      :return:
+
 
 
    .. py:method:: plot_data(ax=None, **kwargs)
@@ -57,23 +68,14 @@ Classes
       :return:
 
 
-   .. py:method:: map_trend()
-      :classmethod:
-
-      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
-
-      :param val: trend value
-      :return:
-
-
 
 .. py:class:: SeasonalKendall(df, data_col, season_col, alpha=0.05, rm_na=True, freq_limit=0.05)
-
 
    Bases: :py:obj:`MannKendall`
 
    .. autoapi-inheritance-diagram:: komanawa.kendall_stats.mann_kendall.SeasonalKendall
       :parts: 1
+
 
    an object to hold and calculate seasonal kendall trends
 
@@ -89,10 +91,23 @@ Classes
    :param season_col: the column of the season data used to calculate the trend
    :param freq_limit: the maximum difference in frequency between seasons (as a fraction), if greater than this will raise a warning
 
+
    .. py:method:: calc_senslope()
 
       calculate the senslope of the data
       :return: senslope, senintercept, lo_slope, lo_intercept
+
+
+
+   .. py:method:: map_trend()
+      :classmethod:
+
+
+      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
+
+      :param val: trend value
+      :return:
+
 
 
    .. py:method:: plot_data(ax=None, **kwargs)
@@ -101,15 +116,6 @@ Classes
 
       :param ax: optional matplotlib axis to plot the data on
       :param kwargs: kwargs to pass to plt.scatter for the raw data (note that the seasonal column is passed to scatter as c)
-      :return:
-
-
-   .. py:method:: map_trend()
-      :classmethod:
-
-      map the trend value to a string (1: increasing, -1: decreasing, 0: no trend)
-
-      :param val: trend value
       :return:
 
 

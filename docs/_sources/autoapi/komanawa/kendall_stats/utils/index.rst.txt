@@ -1,5 +1,5 @@
-:py:mod:`komanawa.kendall_stats.utils`
-======================================
+komanawa.kendall_stats.utils
+============================
 
 .. py:module:: komanawa.kendall_stats.utils
 
@@ -10,18 +10,16 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    komanawa.kendall_stats.utils.estimate_runtime
 
 
+Module Contents
+---------------
 
 .. py:function:: estimate_runtime(npoints, func, plot=False)
 
