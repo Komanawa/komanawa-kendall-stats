@@ -1,4 +1,4 @@
-Komanawa Kendall Stats
+Kо̄manawa Kendall Stats
 #########################################
 
 a small repo that holds:

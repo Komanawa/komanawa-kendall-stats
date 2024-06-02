@@ -10,7 +10,7 @@ from pathlib import Path
 project = 'komanawa-kendall-stats'
 light_name = 'kendall-stats'
 project_dirname='kendall_stats'
-copyright = '2024, Komanawa Solutions Ltd.'
+copyright = '2024, Kо̄manawa Solutions Ltd.'
 author = 'Matt Dumont'
 sys.path.append(str(Path(__file__).parent.parent.joinpath('src', 'komanawa', project_dirname)))
 print(sys.path)
@@ -81,7 +81,7 @@ html_theme_options = {
             "type": "fontawesome",
         },
         {
-            "name": "Komanawa Solutions Ltd.",
+            "name": "Kо̄manawa Solutions Ltd.",
             "url": "https://www.komanawa.com",
             "icon": "_static/just_symbol.png",
             "type": "local",
