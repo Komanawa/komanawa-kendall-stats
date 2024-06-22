@@ -682,7 +682,13 @@ class MultiPartKendall():
             if isinstance(self.data, pd.DataFrame) or isinstance(self.data, pd.Series):
                 assert np.in1d(check_window.flatten(), self.data.index).all(), (
                     'check_window contains values not in data index')
-                assert not self.data.loc[check_window.flatten(), self.data_col].isna().any(), (
+
+                if data_col:
+                    check_data = self.data[self.data_col]
+                else:
+                    check_data = self.data
+
+                assert not check_data.loc[check_window.flatten()].isna().any(), (
                     'check_window references nan values')
                 if self.season_col is not None:
                     assert not self.data.loc[check_window.flatten(), self.season_col].isna().any(), (
