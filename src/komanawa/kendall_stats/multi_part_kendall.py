@@ -494,7 +494,7 @@ class MultiPartKendall():
         :param check_inputs: bool, if True will check the inputs match the serialised file
         """
         assert self.serialise_path is not None, 'serialise path not set, should not get here'
-        params = pd.read_hdf(self.serialise_path, 'params')
+        params = pd.read_hdf(self.serialise_path, key='params')
         assert isinstance(params, pd.Series)
         # other parameters
         self.alpha = params['alpha']
@@ -513,7 +513,7 @@ class MultiPartKendall():
         else:
             self.freq_limit = None
 
-        params_str = pd.read_hdf(self.serialise_path, 'params_str')
+        params_str = pd.read_hdf(self.serialise_path, key='params_str')
         assert isinstance(params_str, pd.Series)
         datatype = params_str['datatype']
         self.season_col = params_str['season_col']
@@ -524,11 +524,11 @@ class MultiPartKendall():
             self.data_col = None
 
         # d1 data
-        d1_data = pd.read_hdf(self.serialise_path, 'd1_data')
+        d1_data = pd.read_hdf(self.serialise_path, key='d1_data')
         assert isinstance(d1_data, pd.DataFrame)
         self.x = d1_data['x'].values
         self.idx_values = d1_data['idx_values'].values
-        self.acceptable_matches = pd.read_hdf(self.serialise_path, 'acceptable_matches')
+        self.acceptable_matches = pd.read_hdf(self.serialise_path, key='acceptable_matches')
 
         # check window
         if 'check_window' in params_str.index:
@@ -543,20 +543,20 @@ class MultiPartKendall():
                 self.check_window = None
                 self.int_check_window = None
             else:
-                temp = pd.read_hdf(self.serialise_path, 'check_window')
+                temp = pd.read_hdf(self.serialise_path, key='check_window')
                 assert isinstance(temp, pd.DataFrame)
                 self.check_window = temp.values
                 temp = pd.Series(index=self.idx_values, data=np.arange(len(self.idx_values)))
                 self.int_check_window = temp[self.check_window.flatten()].values.reshape(self.check_window.shape)
 
         if datatype == 'pd.DataFrame':
-            self.data = pd.read_hdf(self.serialise_path, 'data')
+            self.data = pd.read_hdf(self.serialise_path, key='data')
             assert isinstance(self.data, pd.DataFrame)
         elif datatype == 'pd.Series':
-            self.data = pd.read_hdf(self.serialise_path, 'data')
+            self.data = pd.read_hdf(self.serialise_path, key='data')
             assert isinstance(self.data, pd.Series)
         elif datatype == 'np.array':
-            self.data = pd.read_hdf(self.serialise_path, 'data').values
+            self.data = pd.read_hdf(self.serialise_path, key='data').values
             assert isinstance(self.data, np.ndarray)
             assert self.data.ndim == 1
         else:
@@ -568,11 +568,11 @@ class MultiPartKendall():
             self.season_data = None
 
         # s array
-        self.s_array = pd.read_hdf(self.serialise_path, 's_array').values
+        self.s_array = pd.read_hdf(self.serialise_path, key='s_array').values
         assert self.s_array.shape == (self.n, self.n)
 
         # all start points
-        self.all_start_points = pd.read_hdf(self.serialise_path, 'all_start_points').values
+        self.all_start_points = pd.read_hdf(self.serialise_path, key='all_start_points').values
         assert self.all_start_points.shape == (len(self.all_start_points), self.nparts - 1)
 
         # datasets
@@ -582,7 +582,7 @@ class MultiPartKendall():
             dtypes.update({f'split_point_{part}': 'int64'})
         self.datasets = {}
         for part in range(self.nparts):
-            self.datasets[f'p{part}'] = pd.read_hdf(self.serialise_path, f'part{part}').astype(dtypes)
+            self.datasets[f'p{part}'] = pd.read_hdf(self.serialise_path, key=f'part{part}').astype(dtypes)
 
         if check_inputs:
             # check parameters have not changed
@@ -789,31 +789,31 @@ class MultiPartKendall():
             d1_data = pd.DataFrame(index=range(len(self.x)))
             d1_data['x'] = self.x
             d1_data['idx_values'] = self.idx_values
-            d1_data.to_hdf(hdf, 'd1_data')
+            d1_data.to_hdf(hdf, key='d1_data')
 
             self.acceptable_matches.to_hdf(hdf, 'acceptable_matches', complevel=complevel, complib=complib)
             # save as own datasets
             if isinstance(self.data, pd.DataFrame):
-                self.data.to_hdf(hdf, 'data', complevel=complevel, complib=complib)
+                self.data.to_hdf(hdf, key='data', complevel=complevel, complib=complib)
                 params_str['datatype'] = 'pd.DataFrame'
             elif isinstance(self.data, pd.Series):
-                self.data.to_hdf(hdf, 'data', complevel=complevel, complib=complib)
+                self.data.to_hdf(hdf, key='data', complevel=complevel, complib=complib)
                 params_str['datatype'] = 'pd.Series'
             else:
                 params_str['datatype'] = 'np.array'
-                pd.Series(self.data).to_hdf(hdf, 'data', complevel=complevel, complib=complib)
+                pd.Series(self.data).to_hdf(hdf, key='data', complevel=complevel, complib=complib)
 
             assert isinstance(self.s_array, np.ndarray)
-            pd.DataFrame(self.s_array).to_hdf(hdf, 's_array', complevel=complevel, complib=complib)
+            pd.DataFrame(self.s_array).to_hdf(hdf, key='s_array', complevel=complevel, complib=complib)
             assert isinstance(self.all_start_points, np.ndarray)
-            pd.DataFrame(self.all_start_points).to_hdf(hdf, 'all_start_points', complevel=complevel, complib=complib)
+            pd.DataFrame(self.all_start_points).to_hdf(hdf, key='all_start_points', complevel=complevel, complib=complib)
 
             for part in range(self.nparts):
-                self.datasets[f'p{part}'].astype(float).to_hdf(hdf, f'part{part}', complevel=complevel, complib=complib)
+                self.datasets[f'p{part}'].astype(float).to_hdf(hdf, key=f'part{part}', complevel=complevel, complib=complib)
 
             # check_window
             if self.check_window is not None:
-                pd.DataFrame(self.check_window).to_hdf(hdf, 'check_window', complevel=complevel, complib=complib)
+                pd.DataFrame(self.check_window).to_hdf(hdf, key='check_window', complevel=complevel, complib=complib)
             else:
                 params_str['check_window'] = 'None'
 
@@ -832,8 +832,8 @@ class MultiPartKendall():
 
             params_str['season_col'] = str(self.season_col)
             params_str['data_col'] = str(self.data_col)
-            params.to_hdf(hdf, 'params', complevel=complevel, complib=complib)
-            params_str.to_hdf(hdf, 'params_str', complevel=complevel, complib=complib)
+            params.to_hdf(hdf, key='params', complevel=complevel, complib=complib)
+            params_str.to_hdf(hdf, key='params_str', complevel=complevel, complib=complib)
 
     @classmethod
     @staticmethod
