@@ -280,11 +280,28 @@ class MultiPartKendall():
         get the acceptable matches for the multipart kendall test
         :return: pd.DataFrame
         """
-        outdata = self.datasets['p0'].loc[self.acceptable_matches]
+        return self._get_matches(acceptable_only=True)
+
+
+    def get_all_matches(self):
+        """
+        get the all matches for the multipart kendall test (including those that are not significant)
+        :return: pd.DataFrame
+        """
+        return self._get_matches(acceptable_only=False)
+
+    def _get_matches(self, acceptable_only):
+
+        if acceptable_only:
+            use_idx  = self.acceptable_matches
+        else:
+            use_idx = np.ones(self.acceptable_matches.shape, dtype=bool)
+
+        outdata = self.datasets['p0'].loc[use_idx]
         outdata = outdata.set_index([f'split_point_{i}' for i in range(1, self.nparts)])
         outdata.rename(columns={f'{e}': f'{e}_p0' for e in ['trend', 'h', 'p', 'z', 's', 'var_s']}, inplace=True)
         for i in range(1, self.nparts):
-            next_data = self.datasets[f'p{i}'].loc[self.acceptable_matches]
+            next_data = self.datasets[f'p{i}'].loc[use_idx]
             next_data = next_data.set_index([f'split_point_{j}' for j in range(1, self.nparts)])
             next_data.rename(columns={f'{e}': f'{e}_p{i}' for e in ['trend', 'h', 'p', 'z', 's', 'var_s']},
                              inplace=True)
@@ -302,22 +319,6 @@ class MultiPartKendall():
         outdata['znorm_joint'] = outdata[[f'znorm_p{p}' for p in range(self.nparts)]].sum(axis=1)
         return deepcopy(outdata)
 
-    def get_all_matches(self):
-        """
-        get the all matches for the multipart kendall test (including those that are not significant)
-        :return: pd.DataFrame
-        """
-        outdata = self.datasets['p0']
-        outdata = outdata.set_index([f'split_point_{i}' for i in range(1, self.nparts)])
-        outdata.rename(columns={f'{e}': f'{e}_p0' for e in ['trend', 'h', 'p', 'z', 's', 'var_s']}, inplace=True)
-        for i in range(1, self.nparts):
-            next_data = self.datasets[f'p{i}']
-            next_data = next_data.set_index([f'split_point_{j}' for j in range(1, self.nparts)])
-            next_data.rename(columns={f'{e}': f'{e}_p{i}' for e in ['trend', 'h', 'p', 'z', 's', 'var_s']},
-                             inplace=True)
-            outdata = pd.merge(outdata, next_data, left_index=True, right_index=True)
-
-        return deepcopy(outdata)
 
     def get_maxz_breakpoints(self, raise_on_none=False):
         """
