@@ -835,7 +835,6 @@ class MultiPartKendall():
             params.to_hdf(hdf, key='params', complevel=complevel, complib=complib)
             params_str.to_hdf(hdf, key='params_str', complevel=complevel, complib=complib)
 
-    @classmethod
     @staticmethod
     def from_file(path):
         """
@@ -935,7 +934,6 @@ class SeasonalMultiPartKendall(MultiPartKendall):
             if self.serialise and not loaded:
                 self.to_file()
 
-    @classmethod
     @staticmethod
     def from_file(path):
         """
