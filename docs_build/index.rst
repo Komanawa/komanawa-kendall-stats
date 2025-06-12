@@ -54,16 +54,16 @@ For the latest version use:
 
 .. code-block:: bash
 
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git
+    pip install git+https://github.com/Komanawa/komanawa-kendall-stats.git
 
 For a specific version use:
 
 .. code-block:: bash
 
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git@{version}
+    pip install git+https://github.com/Komanawa/komanawa-kendall-stats.git@{version}
 
     # example:
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git@v1.0.0
+    pip install git+https://github.com/Komanawa/komanawa-kendall-stats.git@v1.0.0
 
 Update
 =======
@@ -78,7 +78,7 @@ otherwise, use pip update option
 
 .. code-block:: bash
 
-    pip install git+https://github.com/Komanawa-Solutions-Ltd/komanawa-kendall-stats.git -U
+    pip install git+https://github.com/Komanawa/komanawa-kendall-stats.git -U
 
 
 Usage
