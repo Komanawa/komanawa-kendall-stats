@@ -120,8 +120,8 @@ Package Contents
    :return:
 
 
-   .. py:method:: from_file()
-      :classmethod:
+   .. py:method:: from_file(path)
+      :staticmethod:
 
 
       load the class from a serialised file
@@ -296,8 +296,8 @@ Package Contents
    :return:
 
 
-   .. py:method:: from_file()
-      :classmethod:
+   .. py:method:: from_file(path)
+      :staticmethod:
 
 
       load the class from a serialised file

@@ -59,8 +59,8 @@ Module Contents
    :return:
 
 
-   .. py:method:: from_file()
-      :classmethod:
+   .. py:method:: from_file(path)
+      :staticmethod:
 
 
       load the class from a serialised file
@@ -184,8 +184,8 @@ Module Contents
    :return:
 
 
-   .. py:method:: from_file()
-      :classmethod:
+   .. py:method:: from_file(path)
+      :staticmethod:
 
 
       load the class from a serialised file
