@@ -681,7 +681,7 @@ class MultiPartKendall():
             self.check_window = check_window
 
             if isinstance(self.data, pd.DataFrame) or isinstance(self.data, pd.Series):
-                assert np.in1d(check_window.flatten(), self.data.index).all(), (
+                assert np.isin(check_window.flatten(), self.data.index).all(), (
                     'check_window contains values not in data index')
 
                 if data_col:
