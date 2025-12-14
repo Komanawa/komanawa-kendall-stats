@@ -7,11 +7,6 @@ import pandas as pd
 from scipy.stats import norm, mstats
 import warnings
 import matplotlib.pyplot as plt
-
-try:
-    from matplotlib.cm import get_cmap
-except ImportError:
-    from matplotlib.pyplot import get_cmap
 from matplotlib.lines import Line2D
 
 
@@ -384,12 +379,12 @@ def _calc_seasonal_senslope(y, season, x=None, alpha=0.95, method='separate'):
 def get_colors(vals, cmap='tab10'):
     n_scens = len(vals)
     if n_scens < 20:
-        cmap = get_cmap(cmap)
+        cmap = plt.get_cmap(cmap)
         colors = [cmap(e / (n_scens + 1)) for e in range(n_scens)]
     else:
         colors = []
         i = 0
-        cmap = get_cmap(cmap)
+        cmap = plt.get_cmap(cmap)
         for v in vals:
             colors.append(cmap(i / 20))
             i += 1
